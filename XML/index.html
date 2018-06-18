@@ -1,29 +1,189 @@
 ---
 title: Understanding BEAST 2 XML
+reveal:
+    center: false
+    history: true
+    slideNumber: true
+    theme: theme.css
 ---
 
 <section>
   <h1>What is BEAST 2 XML?</h1>
+
+  <ul class="spaced">
+    <li>Precise description of the:
+      <ol>
+        <li>Data (alignment, sampling times, ...)</li>
+        <li>Model (substitution model, tree prior, ...)</li>
+        <li>Parameter priors</li>
+      </ol>
+      which form the basis of a BEAST analysis.
+    </li>
+    <li>Usually produced by BEAUti.</li>
+    <li>Read by BEAST to when the analysis is run. (Nothing else matters!)</li>
+    <li>Important component of the BEAST 2 strategy for making results reproducible.</li>
+  </ul>
 </section>
 
 <section>
   <h1>Why should I learn about BEAST 2 XML?</h1>
+
+  <ul class="spaced">
+    <li>Every BEAST 2 analysis that can be executed can be described using BEAST 2 XML.
+      <ul>
+        <li>Many (despite the best efforts of model developers) of these analyses cannot be set up using BEAUti.</li>
+        <li>Being able to even slightly modify the XML that BEAUti produces dramatically increases the number of analyses one can do.
+      </ul>
+
+    <li>Several frequently-requested analysis types are most easily achieved by modifying the XML:
+      <ul>
+        <li>User-defined starting trees.</li>
+        <li>Fixing parameters or the trees in the analysis.</li>
+        <li>Linking certain models (beyond usual subsitution, clock, or tree priors)</li>
+      </ul>
+    </li>
+
+  </ul>
 </section>
 
 <section>
   <h1>BEAST 2 XML: A first look</h1>
+
+  <pre class="stretch" style="width:100%"><code class="XML">
+    <beast version='2.0' namespace='...'>
+      <run spec="MCMC" id="mcmc" chainLength="1000000000">
+        <state>
+          <stateNode spec='RealParameter' id="hky.kappa">1.0</stateNode>
+          <stateNode spec='RealParameter' id="popSize">1.0</stateNode>
+          <stateNode spec='beast.util.ClusterTree' id='tree' clusterType='upgma'>
+            <taxa idref='alignment'/>
+          </stateNode>
+        </state>
+
+        <distribution spec="CompoundDistribution" id="posterior">
+          <distribution id="coalescent" spec="Coalescent">
+            <treeIntervals spec='TreeIntervals' id='TreeIntervals'>
+              <tree idref="tree"/>
+            </treeIntervals>
+            <populationModel spec="ConstantPopulation" id='ConstantPopulation'>
+              <popSize idref="popSize"/>
+            </populationModel>
+          </distribution>
+
+          <distribution spec='TreeLikelihood' id="treeLikelihood">
+            <data id="alignment" dataType="nucleotide">
+              <sequence taxon="human"  value="AGAAAT..."/>
+              <sequence taxon="chimp"  value="AGAAAT..."/>
+              <sequence taxon="bonobo" value="AGAAAT..."/>
+            </data>
+
+            <tree idref="tree"/>
+            <siteModel spec='SiteModel' id="siteModel">
+              <input name='substModel' idref='hky'/>
+              <substModel spec='HKY' id="hky">
+                <kappa idref='hky.kappa'/>
+                <frequencies id='freqs' spec='Frequencies'>
+                  <data idref='alignment'/>
+              </substModel>
+            </siteModel>
+          </distribution>
+        </distribution>
+
+        <operator id='kappaScaler' spec='ScaleOperator' scaleFactor="0.5" weight="1">
+          <parameter idref="hky.kappa"/>
+        </operator>
+        <operator id='popSizeScaler' spec='ScaleOperator' scaleFactor="0.5" weight="1">
+          <parameter idref="popSize"/>
+        </operator>
+        <operator spec='SubtreeSlide' weight="5" gaussian="true" size="1.0">
+          <tree idref="tree"/>
+        </operator>
+
+        <logger logEvery="10000" fileName="$(filebase).log">
+          <log idref="hky.kappa"/>
+        </logger>
+        <logger logEvery="20000" fileName="$(filebase).trees">
+          <log idref="tree"/>
+        </logger>
+        <logger logEvery="10000">
+          ...
+        </logger>
+      </run>
+
+    </beast>
+  </code></pre>
+
 </section>
 
 <section>
-  <h1>What is XML</h1>
+  <h1>What is XML?</h1>
+
+  <ul class="spaced">
+    <li>XML is a standard way of representing hierarchically structured data.</li>
+    <li>XML files are plain text files containing XML-formatted data.</li>
+  </ul>
+
+  <br>
+  <br>
+
+  <p>XML file components:</p>
+  <pre style="font-size:0.8em"><code class="xml">
+      &lt;tag attributeOne="Attribute value"
+           attributeTwo="Another attribute value"&gt;
+        &lt;childTag childAttribute="10"&gt; &lt;/childTag&gt;
+        &lt;childTag childAttribute="20"/&gt;
+      &lt;/tag&gt;
+  </code></pre>
+
+  There is <b>a lot</b> that one can say about XML, but this is all we need!
 </section>
 
 <section>
   <h1>Editing XML</h1>
+
+  <ul>
+    <li>XML files are plain text (i.e. a string of printable characters).</li>
+    <li><b>Word processing tools such as MS Word are not suitable</b> for these files.</li>
+    <li>You <i>can</i> edit them using Notepad (Windows) or TextEdit (MacOS), but only use these in an emergency.</li>
+    <li>Ideally one should use a programmers' text editor that supports syntax highlighting and checking:</li>
+
+    <div>
+      <div style="display:inline-block;width:24%;text-align:center">
+        <img data-src="atom.png" style="height:100px"><br>
+        Atom<br>
+        <a style="font-size:0.8em" href="https://atom.io">atom.io</a>
+      </div>
+      <div style="display:inline-block;width:24%;text-align:center">
+        <img data-src="sublime.png" style="height:100px"><br>
+        Sublime Text<br>
+        <a style="font-size:0.8em" href="https://sublimetext.com">sublimetext.com</a>
+      </div>
+      <div style="display:inline-block;width:24%;text-align:center">
+        <img data-src="emacs.png" style="height:100px"><br>
+        GNU Emacs<br>
+        <a style="font-size:0.8em" href="http://gnu.org/software/emacs">gnu.org/s/emacs</a>
+      </div>
+      <div style="display:inline-block;width:24%;text-align:center">
+        <img data-src="vim.png" style="height:100px"><br>
+        Vim<br>
+        <a style="font-size:0.8em" href="https://vim.org">vim.org</a>
+      </div>
+    </div>
+  </ul>
+</section>
+
+<section>
+  <h1>A simple BEAST 2 model</h1>
+
+  <img data-src="beauti_model1.png" style="width:80%">
+  <img data-src="beauti_model2.png" style="width:80%;margin-top:0">
+  <img data-src="beauti_model3.png" style="width:80%;margin-top:0">
 </section>
 
 <section>
   <h1>The BEAST 2 Object Model</h1>
+
+  <img data-src="beast_model.png" style="width:100%">
 </section>
 
 <section>

@@ -7,7 +7,7 @@
     <title>{{page.title}}</title>
 
     <link rel="stylesheet" href="{{site.baseurl}}/reveal.js/css/reveal.css">
-    <link rel="stylesheet" href="{{site.baseurl}}/reveal.js/css/theme/black.css">
+    <link rel="stylesheet" href="{{page.reveal.theme}}">
 
     <!-- Theme used for syntax highlighting of code -->
     <link rel="stylesheet" href="{{site.baseurl}}/reveal.js/lib/css/zenburn.css">
@@ -25,9 +25,12 @@
     <div class="reveal">
       <div class="slides">
 
-        <section class="titlepage">
+        <section class="titlepage"
+                 data-background="https://media-cdn.holidaycheck.com/w_1024,h_768,c_fit,q_80/ugc/images/f6b06b94-ea73-3763-9930-3a01df898e2f">
           <div class="title">{{page.title}}</div>
           <div class="author">Tim Vaughan</div>
+          <div class="institution">cEvo (Stadler Group), D-BSSE, ETH Zurich</div>
+          <div class="meeting">Taming the BEAST 2018</div>
         </section>
 
         {{content}}
@@ -43,12 +46,26 @@
       // - https://github.com/hakimel/reveal.js#configuration
       // - https://github.com/hakimel/reveal.js#dependencies
       Reveal.initialize({
+          controls: {{page.reveal.controls}},
+          progress: {{page.reveal.progress}},
+          history: {{page.reveal.history}},
+          center: {{page.reveal.center}},
+          mouseWheel: {{page.reveal.mouseWheel}},
+          slideNumber: {{page.reveal.slideNumber}},
+          transition: '{{page.reveal.transition}}',
+
+          math: {
+              mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js',
+              config: 'TeX-AMS_HTML-full'  // See http://docs.mathjax.org/en/latest/config-files.html
+          },
+
           dependencies: [
               { src: '{{site.baseurl}}/reveal.js/plugin/markdown/marked.js' },
               { src: '{{site.baseurl}}/reveal.js/plugin/markdown/markdown.js' },
               { src: '{{site.baseurl}}/reveal.js/plugin/notes/notes.js', async: true },
-              { src: '{{site.baseurl}}/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
-	  ]
+              { src: '{{site.baseurl}}/reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+              { src: '{{site.baseurl}}/reveal.js/plugin/math/math.js', async: true }
+          ]
       });
     </script>
   </body>

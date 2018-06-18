@@ -23,3 +23,13 @@ defaults:
       path: ""
     values:
       layout: lecture
+      reveal:
+        theme: ../reveal.js/css/theme/white.css
+        center: true
+        controls: false
+        progress: false
+        history: false
+        center: false
+        mouseWheel: false
+        slideNumber: false
+        transition: none
