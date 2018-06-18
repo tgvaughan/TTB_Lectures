@@ -238,6 +238,20 @@ reveal:
 <section>
   <h1>Inputs with simple types</h1>
 
+  <ul style="margin-top:1em">
+    <li>Some BEASTObjects take inputs with primitive types such as strings (i.e. some text), boolean values (true/false) or numbers.</li>
+    <li>These values are specified using attributes.</li>
+  </ul>
+
+  <pre style="font-size:0.8em;margin-top:5%"><code class="XML">
+      &lt;mcmc spec="MCMC"
+            chainLength="10000000"
+            storeEvery="10000"
+            sampleFromPrior="true"&gt;
+        ...
+      &lt;/mcmc&gt;
+  </code></pre>
+  </ul>
   
 </section>
 
