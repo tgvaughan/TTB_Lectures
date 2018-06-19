@@ -63,67 +63,67 @@ reveal:
   <h1>BEAST 2 XML: A first look</h1>
 
   <pre class="stretch" style="width:100%"><code class="XML">
-    <beast version='2.0' namespace='...'>
-      <run spec="MCMC" id="mcmc" chainLength="1000000000">
-        <state>
-          <stateNode spec='RealParameter' id="hky.kappa">1.0</stateNode>
-          <stateNode spec='RealParameter' id="popSize">1.0</stateNode>
-          <stateNode spec='beast.util.ClusterTree' id='tree' clusterType='upgma'>
-            <taxa idref='alignment'/>
-          </stateNode>
-        </state>
+    &lt;beast version='2.0' namespace='...'&gt;
+      &lt;run spec="MCMC" id="mcmc" chainLength="1000000000"&gt;
+        &lt;state&gt;
+          &lt;stateNode spec='RealParameter' id="hky.kappa"&gt;1.0&lt;/stateNode&gt;
+          &lt;stateNode spec='RealParameter' id="popSize"&gt;1.0&lt;/stateNode&gt;
+          &lt;stateNode spec='ClusterTree' id='tree' clusterType='upgma'&gt;
+            &lt;taxa idref='alignment'/&gt;
+          &lt;/stateNode&gt;
+        &lt;/state&gt;
 
-        <distribution spec="CompoundDistribution" id="posterior">
-          <distribution id="coalescent" spec="Coalescent">
-            <treeIntervals spec='TreeIntervals' id='TreeIntervals'>
-              <tree idref="tree"/>
-            </treeIntervals>
-            <populationModel spec="ConstantPopulation" id='ConstantPopulation'>
-              <popSize idref="popSize"/>
-            </populationModel>
-          </distribution>
+        &lt;distribution spec="CompoundDistribution" id="posterior"&gt;
+          &lt;distribution id="coalescent" spec="Coalescent"&gt;
+            &lt;treeIntervals spec='TreeIntervals' id='TreeIntervals'&gt;
+              &lt;tree idref="tree"/&gt;
+            &lt;/treeIntervals&gt;
+            &lt;populationModel spec="ConstantPopulation" id='ConstantPopulation'&gt;
+              &lt;popSize idref="popSize"/&gt;
+            &lt;/populationModel&gt;
+          &lt;/distribution&gt;
 
-          <distribution spec='TreeLikelihood' id="treeLikelihood">
-            <data id="alignment" dataType="nucleotide">
-              <sequence taxon="human"  value="AGAAAT..."/>
-              <sequence taxon="chimp"  value="AGAAAT..."/>
-              <sequence taxon="bonobo" value="AGAAAT..."/>
-            </data>
+          &lt;distribution spec='TreeLikelihood' id="treeLikelihood"&gt;
+            &lt;data id="alignment" dataType="nucleotide"&gt;
+              &lt;sequence taxon="human"  value="AGAAAT..."/&gt;
+              &lt;sequence taxon="chimp"  value="AGAAAT..."/&gt;
+              &lt;sequence taxon="bonobo" value="AGAAAT..."/&gt;
+            &lt;/data&gt;
 
-            <tree idref="tree"/>
-            <siteModel spec='SiteModel' id="siteModel">
-              <input name='substModel' idref='hky'/>
-              <substModel spec='HKY' id="hky">
-                <kappa idref='hky.kappa'/>
-                <frequencies id='freqs' spec='Frequencies'>
-                  <data idref='alignment'/>
-              </substModel>
-            </siteModel>
-          </distribution>
-        </distribution>
+            &lt;tree idref="tree"/&gt;
+            &lt;siteModel spec='SiteModel' id="siteModel"&gt;
+              &lt;input name='substModel' idref='hky'/&gt;
+              &lt;substModel spec='HKY' id="hky"&gt;
+                &lt;kappa idref='hky.kappa'/&gt;
+                &lt;frequencies id='freqs' spec='Frequencies'&gt;
+                  &lt;data idref='alignment'/&gt;
+              &lt;/substModel&gt;
+            &lt;/siteModel&gt;
+          &lt;/distribution&gt;
+        &lt;/distribution&gt;
 
-        <operator id='kappaScaler' spec='ScaleOperator' scaleFactor="0.5" weight="1">
-          <parameter idref="hky.kappa"/>
-        </operator>
-        <operator id='popSizeScaler' spec='ScaleOperator' scaleFactor="0.5" weight="1">
-          <parameter idref="popSize"/>
-        </operator>
-        <operator spec='SubtreeSlide' weight="5" gaussian="true" size="1.0">
-          <tree idref="tree"/>
-        </operator>
+        &lt;operator id='kappaScaler' spec='ScaleOperator' scaleFactor="0.5" weight="1"&gt;
+          &lt;parameter idref="hky.kappa"/&gt;
+        &lt;/operator&gt;
+        &lt;operator id='popSizeScaler' spec='ScaleOperator' scaleFactor="0.5" weight="1"&gt;
+          &lt;parameter idref="popSize"/&gt;
+        &lt;/operator&gt;
+        &lt;operator spec='SubtreeSlide' weight="5" gaussian="true" size="1.0"&gt;
+          &lt;tree idref="tree"/&gt;
+        &lt;/operator&gt;
 
-        <logger logEvery="10000" fileName="$(filebase).log">
-          <log idref="hky.kappa"/>
-        </logger>
-        <logger logEvery="20000" fileName="$(filebase).trees">
-          <log idref="tree"/>
-        </logger>
-        <logger logEvery="10000">
+        &lt;logger logEvery="10000" fileName="$(filebase).log"&gt;
+          &lt;log idref="hky.kappa"/&gt;
+        &lt;/logger&gt;
+        &lt;logger logEvery="20000" fileName="$(filebase).trees"&gt;
+          &lt;log idref="tree"/&gt;
+        &lt;/logger&gt;
+        &lt;logger logEvery="10000"&gt;
           ...
-        </logger>
-      </run>
+        &lt;/logger&gt;
+      &lt;/run&gt;
 
-    </beast>
+    &lt;/beast&gt;
   </code></pre>
 
 </section>
@@ -256,22 +256,147 @@ reveal:
 </section>
 
 <section>
-  <h1>Connecting BEAST Objects using tags</h1>
+  <h1>Connecting BEAST Objects</h1>
+
+  <img data-src="NormalDistrib.svg">
+
+  <pre><code class="XML">
+      &lt;parentInput spec="Normal"&gt;
+        &lt;mean spec="RealParameter" value="1.0" lower="0.0" upper="5.0"/&gt;
+        &lt;sigma spec="RealParameter" value="0.5" lower="0.0" upper="5.0"/&gt;
+      &lt;/parentInput&gt;
+  </code></pre>
 </section>
 
 <section>
   <h1>Object IDs</h1>
+
+  <img data-src="NormalDistribWithID.svg">
+
 </section>
 
 <section>
-  <h1>Referencing BEAST Objects using tags</h1>
+  <h1>Referencing IDs using tags</h1>
+
+  <img data-src="RealParamWithID.svg">
+
+  <pre><code class="XML">
+      &lt;state&gt;
+        &lt;stateNode spec="RealParameter" value="1.0" id="clockRate"/&gt;
+      &lt;/state&gt;
+
+      ...
+      &lt;logger logEvery="1000" fileName="logfile.log"&gt;
+        &lt;log idref="clockRate"/&gt;
+      &lt;/logger&gt;
+  </code></pre>
+
 </section>
 
 <section>
-  <h1>Referencing BEAST Objects using attributes</h1>
+  <h1>... using attributes</h1>
+
+  <img data-src="RealParamWithID.svg">
+
+  <pre><code class="XML">
+      &lt;state&gt;
+        &lt;stateNode spec="RealParameter" value="1.0" id="clockRate"/&gt;
+      &lt;/state&gt;
+
+      ...
+      &lt;operator spec="ScaleOperator" parameter="@clockRate" weight="1"/&gt;
+  </code></pre>
 </section>
 
 <section>
-  <h1>Alternative forms</h1>
+  <h1>Loose Ends</h1>
+
+  <ul class="spaced">
+    <li>Alternative but equivalent forms of BEASTObject representation:
+      <pre><code class="xml">
+          &lt;parentInput spec="RealParameter" value="1.0"/&gt;
+      </code></pre>
+      <pre><code class="xml">
+          &lt;parameter name="parentInput" value="1.0"/&gt;
+      </code></pre></li>
+
+    <li>BEASTObject class names are in general prefixed by their location in a hierarchy of java packages, e.g. <b>beast.core.parameter.RealParameter</b>.
+      <ul>
+        <li>The <i>namespace</i> attribute to the &lt;beast&gt; tag specifices a list of these locations, and the classes at these locations don't need the prefix.</li>
+        </ul>
+      </li>
+  </ul>
+</section>
+
+<section>
+  <h1>The BEAST XML again</h1>
+
+  <pre class="stretch" style="width:100%"><code class="XML">
+    &lt;beast version='2.0' namespace='...'&gt;
+      &lt;run spec="MCMC" id="mcmc" chainLength="1000000000"&gt;
+        &lt;state&gt;
+          &lt;stateNode spec='RealParameter' id="hky.kappa"&gt;1.0&lt;/stateNode&gt;
+          &lt;stateNode spec='RealParameter' id="popSize"&gt;1.0&lt;/stateNode&gt;
+          &lt;stateNode spec='ClusterTree' id='tree' clusterType='upgma'&gt;
+            &lt;taxa idref='alignment'/&gt;
+          &lt;/stateNode&gt;
+        &lt;/state&gt;
+
+        &lt;distribution spec="CompoundDistribution" id="posterior"&gt;
+          &lt;distribution id="coalescent" spec="Coalescent"&gt;
+            &lt;treeIntervals spec='TreeIntervals' id='TreeIntervals'&gt;
+              &lt;tree idref="tree"/&gt;
+            &lt;/treeIntervals&gt;
+            &lt;populationModel spec="ConstantPopulation" id='ConstantPopulation'&gt;
+              &lt;popSize idref="popSize"/&gt;
+            &lt;/populationModel&gt;
+          &lt;/distribution&gt;
+
+          &lt;distribution spec='TreeLikelihood' id="treeLikelihood"&gt;
+            &lt;data id="alignment" dataType="nucleotide"&gt;
+              &lt;sequence taxon="human"  value="AGAAAT..."/&gt;
+              &lt;sequence taxon="chimp"  value="AGAAAT..."/&gt;
+              &lt;sequence taxon="bonobo" value="AGAAAT..."/&gt;
+            &lt;/data&gt;
+
+            &lt;tree idref="tree"/&gt;
+            &lt;siteModel spec='SiteModel' id="siteModel"&gt;
+              &lt;input name='substModel' idref='hky'/&gt;
+              &lt;substModel spec='HKY' id="hky"&gt;
+                &lt;kappa idref='hky.kappa'/&gt;
+                &lt;frequencies id='freqs' spec='Frequencies'&gt;
+                  &lt;data idref='alignment'/&gt;
+              &lt;/substModel&gt;
+            &lt;/siteModel&gt;
+          &lt;/distribution&gt;
+        &lt;/distribution&gt;
+
+        &lt;operator id='kappaScaler' spec='ScaleOperator' scaleFactor="0.5" weight="1"&gt;
+          &lt;parameter idref="hky.kappa"/&gt;
+        &lt;/operator&gt;
+        &lt;operator id='popSizeScaler' spec='ScaleOperator' scaleFactor="0.5" weight="1"&gt;
+          &lt;parameter idref="popSize"/&gt;
+        &lt;/operator&gt;
+        &lt;operator spec='SubtreeSlide' weight="5" gaussian="true" size="1.0"&gt;
+          &lt;tree idref="tree"/&gt;
+        &lt;/operator&gt;
+
+        &lt;logger logEvery="10000" fileName="$(filebase).log"&gt;
+          &lt;log idref="hky.kappa"/&gt;
+        &lt;/logger&gt;
+        &lt;logger logEvery="20000" fileName="$(filebase).trees"&gt;
+          &lt;log idref="tree"/&gt;
+        &lt;/logger&gt;
+        &lt;logger logEvery="10000"&gt;
+          ...
+        &lt;/logger&gt;
+      &lt;/run&gt;
+
+    &lt;/beast&gt;
+  </code></pre>
+</section>
+
+<section class="titlepage"
+         data-background="https://media-cdn.holidaycheck.com/w_1024,h_768,c_fit,q_80/ugc/images/f6b06b94-ea73-3763-9930-3a01df898e2f">
 </section>
 
