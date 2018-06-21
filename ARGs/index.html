@@ -65,6 +65,13 @@ reveal:
 
 <section>
   <h1>Relationship to Species Phylogenies</h1>
+
+  <div style="display:inline-block;width:49%">
+    <img data-src="MSC_norecomb.svg" style="width:100%" class="fragment">
+  </div>
+  <div style="display:inline-block;width:49%">
+    <img data-src="MSC_withrecomb.svg" style="width:100%" class="fragment">
+  </div>
 </section>
 
 <section>
@@ -94,7 +101,7 @@ reveal:
             </table>
         </li>
 
-        <li style="margin-top:20px">Explicitly model recombination processes.<br>
+        <li class="fragment" style="margin-top:20px">Explicitly model recombination processes.<br>
             <table style="width:800px">
                 <tr><th style="width:400px">Pros</th> <th>Cons</th></tr>
                 <tr>
@@ -257,13 +264,13 @@ reveal:
 
     <div style="float:left; width:700px">
         <ul>
-            <li class="fragment" data-fragment-index="1">Bacteria play important roles (both positive and
+            <li data-fragment-index="1">Bacteria play important roles (both positive and
                 negative) in the health of animals and
                 plants.</li>
-            <li class="fragment" data-fragment-index="2">Many bacteria possess interesting and
+            <li data-fragment-index="2">Many bacteria possess interesting and
                 <i>experimentally accessible</i> evolutionary
                 dynamics.</li>
-            <li class="fragment" data-fragment-index="3">Bacterial genomes are measurably evolving over
+            <li data-fragment-index="3">Bacterial genomes are measurably evolving over
                 relatively short study periods.
                 <div class="figure" style="width:500px; position: relative; left: 100px">
                     <img data-src="MEP_cropped.png">
@@ -309,9 +316,9 @@ reveal:
     <img data-src="conjugation.jpg" class="fragment" data-fragment-index="7"
                                                      style="position:absolute; top:100px; right:0px; height:250px;">
     <ul>
-        <li class="fragment">Effect of events can be plasmid transfer, insertion or homologous recombination.</li>
-        <li class="fragment">Rate of recombination varies and is subject to selection.</li>
-        <li class="fragment">Focus on homologous recombination: only event which doesn't alter the length of the sequence.</li>
+        <li>Effect of events can be plasmid transfer, insertion or homologous recombination.</li>
+        <li>Rate of recombination varies and is subject to selection.</li>
+        <li>Focus on homologous recombination: only event which doesn't alter the length of the sequence.</li>
     </ul>
 </section>
 
@@ -422,7 +429,7 @@ reveal:
             $T$ and $M$ conversions $\{C_i\}_{i\in[1\ldots M]}$.</li>
     </ul>
 
-    <div class="fragment">
+    <div>
     <p>The genealogy density under ClonalOrigin model can be expanded</p>
     \begin{equation*}
         f_{CGC}(G|\rho',\delta,N)=\left(\prod_{i=1}^M f(C_i|T,N,\delta)\right)P(M|T,\rho)f_C(T|N)
@@ -436,9 +443,9 @@ reveal:
     <p>Despite using a simplified model, an infinite number of ARGs still
     possess the same likelihood given a sequence alignment.</p>
 
-    <img class="fragment" data-src="identifiability.svg" style="box-shadow:none;width:800px">
+    <img data-src="identifiability.svg" style="box-shadow:none;width:800px">
 
-    <blockquote class="fragment">
+    <blockquote>
         Very important for an MCMC algorithm to propose state changes which minimize effect on likelihood.
     </blockquote>
 </section>
@@ -468,7 +475,7 @@ reveal:
     <ul>
         <li> It is trivial to sample directly from the approximate ARG prior
             via coalescent simulation.</li>
-        <li class="fragment"> We expect precise agreement between our MCMC algorithm and the
+        <li> We expect precise agreement between our MCMC algorithm and the
             coalescent simulation when no data is involved.</li>
     </ul>
 
@@ -497,7 +504,7 @@ reveal:
     <p style="margin:0px">True ARG:</p>
     <img data-src="true_tree.svg" style="box-shadow:none; padding:0; margin:0; width:800px">
 
-    <div class="fragment">
+    <div>
         <p style="margin:0px">Randomly-selected ARG from MCMC:</p>
         <img data-src="sampled_tree.svg" style="box-shadow:none; padding:0; margin:0; width:800px">
     </div>
@@ -567,12 +574,13 @@ reveal:
     <br>
 
     <ul>
-        <li class="fragment">BEAST 2 package that performs inference under the ClonalOrigin model.</li>
-        <li class="fragment">Joint inference of the clonal frame, recombinant edges and parameters.</li>
-        <li class="fragment">Can be combined with usual variety of substitution models, parametric population models and parameter priors.</li>
-        <li class="fragment">GUI analysis configuration via BEAUti.</li>
+        <li>BEAST 2 package that performs inference under the ClonalOrigin model.</li>
+        <li>Joint inference of the clonal frame, recombinant edges and parameters.</li>
+        <li>Can be combined with usual variety of substitution models, parametric population models and parameter priors.</li>
+        <li>GUI analysis configuration via BEAUti.</li>
     </ul>
 </section>
+
 
 <section>
     <h1>Bayesian Skyline Plots in Bacter</h1>
@@ -580,9 +588,9 @@ reveal:
     <img data-src="skyline_icon.svg" style="box-shadow:none;width:400px">
 
     <ul>
-        <li class="fragment">Bacter implements a non-parametric demographic history model inspired by the standard Bayesian Skyline Plot <a href="https://doi.org/10.1093/molbev/msi103">(Drummond et al., 2005)</a>.</li>
-        <li class="fragment">In principle can reconstruct non-trivial dynamics from very few genomes.</li>
-        <li class="fragment">In practice, this is limited by the computational expense of the algorithm.</li>
+        <li>Bacter implements a non-parametric demographic history model inspired by the standard Bayesian Skyline Plot <a href="https://doi.org/10.1093/molbev/msi103">(Drummond et al., 2005)</a>.</li>
+        <li>In principle can reconstruct non-trivial dynamics from very few genomes.</li>
+        <li>In practice, this is limited by the computational expense of the algorithm.</li>
     </ul>
 </section>
 
@@ -609,22 +617,22 @@ reveal:
 
      <div style="float:left;width:600px">
      <ul>
-         <li class="fragment">Computational complexity scales with the number of proposed conversions.
+         <li>Computational complexity scales with the number of proposed conversions.
              <ul>
-                 <li class="fragment">This can be arbitrarily large, even for small sample sets.</li>
-                 <li class="fragment">Cannot use the BEAGLE phylogenetic likelihood library to speed things up due
+                 <li>This can be arbitrarily large, even for small sample sets.</li>
+                 <li>Cannot use the BEAGLE phylogenetic likelihood library to speed things up due
                      to peculiarities of ARG likelihood computation.</li>
              </ul>
              <br>
          </li>
-         <li class="fragment">MCMC algorithm used does not intelligently locate conversions.
+         <li>MCMC algorithm used does not intelligently locate conversions.
              <ul>
-                 <li class="fragment">Looking at addressing this in the near future.</li>
+                 <li>Looking at addressing this in the near future.</li>
              </ul>
              <br>
          </li>
 
-         <li class="fragment">Network summary algorithm can produce peculiar results.
+         <li>Network summary algorithm can produce peculiar results.
              <ul>
                  <li>More research needs to be done to find a better algorithm.</li>
              </ul>
