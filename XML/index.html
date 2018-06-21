@@ -149,6 +149,7 @@ reveal:
            attributeTwo="Another attribute value"&gt;
         &lt;childTag childAttribute="10"&gt; &lt;/childTag&gt;
         &lt;childTag childAttribute="20"/&gt;
+        &lt;!-- This is a "comment" --&gt;
       &lt;/tag&gt;
   </code></pre>
 
@@ -396,7 +397,107 @@ reveal:
   </code></pre>
 </section>
 
-<section class="titlepage"
-         data-background="https://media-cdn.holidaycheck.com/w_1024,h_768,c_fit,q_80/ugc/images/f6b06b94-ea73-3763-9930-3a01df898e2f">
+<section data-background="https://media-cdn.holidaycheck.com/w_1024,h_768,c_fit,q_80/ugc/images/f6b06b94-ea73-3763-9930-3a01df898e2f">
 </section>
 
+<section class="center"
+         data-background="https://media-cdn.holidaycheck.com/w_1024,h_768,c_fit,q_80/ugc/images/f6b06b94-ea73-3763-9930-3a01df898e2f">
+  <h1>Questions?</h1>
+
+</section>
+
+
+<section class="titlepage" data-background="https://media-cdn.holidaycheck.com/w_1024,h_768,c_fit,q_80/ugc/images/f6b06b94-ea73-3763-9930-3a01df898e2f">
+
+  <div class="title">XML Hacking Tutorial</div>
+</section>
+  
+
+<section>
+  <h1>Structure of Tutorial</h1>
+
+  <p style="margin-top:10%">This tutorial covers a short series of
+  small XML-hacking exercises:</p>
+
+  <ol>
+    <li>Modifying MCMC parameters.</li>
+    <li>Setting an initial tree.</li>
+    <li>Fixing the tree in an analysis.</li>
+    <li>Linking a model in an analysis.</li>
+  </ol>
+
+  <p style="margin-top:5%">You will be given <b>15 minutes</b> for
+  each exercise, after which I will present the solution.</p>
+</section>
+
+<section>
+  <h1>Exercise 1:<br>Modifying MCMC parameters</h1>
+  <p>Modification of basic parameters of the MCMC and loggers are easy to do directly in the XML.</p>
+  <ol>
+    <li>Download the primate-mtDNA.nex alignment from <a href="https://tgvaughan.github.io/TTB_Lectures/XML/downloads/primate-mtDNA.nex">tgvaughan.github.io/TTB_Lectures/XML/downloads/primate-mtDNA.nex</a></li>
+    <li>Load into BEAUti, link tree models and save.</li>
+
+    <li>Open the resulting XML in your text editor of choice.</li>
+    <li>Modify the chain length to be $10^6$ iterations.</li>
+    <li>Make the algorithm store the state every $10^4$ iterations.</li>
+    <li>Change the sampling frequency of the trace and tree logs to one sample per $10^4$ iterations.</li>
+  </ol>
+
+</section>
+
+<section class="center">
+  <h1>Exercise 1 Solution</h1>
+
+</section>
+
+<section>
+  <h1>Exercise 2:<br>Setting an initial tree</h1>
+
+  <p>By default BEAST initializes the tree randomly in a way that is consistent with any topological constraints, but occasionally we need to provide a better starting tree by hand.</p>
+  <ol>
+    <li>Download the primate tree file (Newick format) from
+<a href="https://tgvaughan.github.io/TTB_Lectures/XML/downloads/primate_tree.newick">tgvaughan.github.io/TTB_Lectures/XML/downloads/primate_tree.newick</a></li>
+    <li>Open the XML from the previous exercise.</li>
+    <li>Remove the &lt;init;&gt;...&lt;/init&gt; element.</li>
+    <li>Find and modify the &lt;tree&gt; element within the &lt;state&gt; according to the instructions at <a href="https://beast2.org/fix-starting-tree">beast2.org/fix-starting-tree</a> to set the starting tree to the tree found in primate_tree.newick.</li>
+    <li>Run the analysis and verify (using <a href="https://icytree.org">icytree.org</a> or FigTree) that the initial tree matches the one we chose.</li>
+  </ol>
+</section>
+
+<section class="center">
+  <h1>Exercise 2 Solution</h1>
+</section>
+
+<section>
+  <h1>Exercise 3:<br>Fixing the tree in an analysis</h1>
+
+  <p>Occasionally we (think!) we know the tree topology perfectly.  We can easily prevent the analysis from sampling distinct tree topologies:</p>
+
+  <ol>
+    <li>Open the XML from the previous exercise.</li>
+    <li>Locate the section of the file defining operators.</li>
+    <li>Remove/"comment out" the SubtreeSlide, Exchange and WilsonBalding operators.</li>
+    <li>Run the analysis and verify that the topology is now fixed during the analysis.</li>
+  </ol>
+    
+</section>
+
+<section class="center">
+  <h1>Exercise 3 Solution</h1>
+</section>
+
+<section>
+  <h1>Exercise 4:<br>Linking models</h1>
+
+  <p>Allowing different subsets of the data to share a model is useful/necessary.  Here we experiment with linking clock models, but the approach translates to other models (e.g. migration).</p>
+  <ol>
+    <li>Open the XML from the previous exercise.</li>
+    <li>Remove <b>clockRate.c:2ndpos</b> and <b>clockRate.c:3rdpos</b> parameters from <b>&lt;state&gt;</b>, priors on these parameters, operators and loggers for these parameters.</li>
+    <li>Replace the <b>&lt;branchRateModel&gt;</b> from <b>treeLikelihood.2ndpos/3rdpos</b> with idrefs pointing to the <b>&lt;branchRateModel&gt;</b> in <b>treeLikelihood.1stpos</b>.</li>
+    <li>Run the analysis and view the output in tracer to ensure that there is now a single clock rate for the coding sites.</li>
+  </ol>
+</section>
+
+<section class="center">
+  <h1>Exercise 4 Solution</h1>
+</section>
