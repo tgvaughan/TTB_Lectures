@@ -47,6 +47,8 @@ body {
 	margin: $headingMargin;
 	color: $headingColor;
         background-color: $headingBackgroundColor;
+        border-radius: $headingBorderRadius;
+        box-shadow: $headingBoxShadow;
 
 	font-family: $headingFont;
 	font-weight: $headingFontWeight;

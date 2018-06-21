@@ -55,9 +55,9 @@
     
     <map name="OneOnX" >beast.math.distributions.OneOnX</map>
     
-    <run id="mcmc" spec="MCMC" chainLength="10000000">
+    <run id="mcmc" spec="MCMC" chainLength="1000000">
             
-        <state id="state" storeEvery="5000">
+        <state id="state" storeEvery="10000">
                     
             <parameter id="clockRate.c:1stpos" name="stateNode">1.0</parameter>
                     
@@ -65,7 +65,9 @@
                     
             <parameter id="clockRate.c:2ndpos" name="stateNode">1.0</parameter>
                     
-            <tree id="Tree.t:noncoding" name="stateNode">
+            <stateNode id="Tree.t:noncoding" spec="beast.util.TreeParser"
+                       IsLabelledNewick='true' adjustTipHeights='false'
+                       newick="((Lemur_catta:0.08274719949403084,Tarsius_syrichta:0.08274719949403084):0.03765498415061175,((((((Homo_sapiens:0.021298651975776017,Pan:0.021298651975776017):0.008444258162441123,Gorilla:0.02974291013821714):0.025930891110162394,Pongo:0.055673801248379534):0.01152428250480425,Hylobates:0.06719808375318378):0.026926575528825367,(((Macaca_fuscata:0.00991564214988687,M._mulatta:0.00991564214988687):0.010322524395001682,M._fascicularis:0.020238166544888553):0.00921968119663141,M._sylvanus:0.029457847741519962):0.06466681154048919):0.02157858990053435,Saimiri_sciureus:0.1157032491825435):0.004698934462099083):0.0;">
                             
                 <taxonset id="TaxonSet.noncoding" spec="TaxonSet">
                                     
@@ -77,21 +79,11 @@
                                 
                 </taxonset>
                         
-            </tree>
+            </stateNode>
                     
             <parameter id="birthRate.t:noncoding" name="stateNode">1.0</parameter>
                 
         </state>
-            
-        <init id="RandomTree.t:noncoding" spec="beast.evolution.tree.RandomTree" estimate="false" initial="@Tree.t:noncoding" taxa="@noncoding">
-                    
-            <populationModel id="ConstantPopulation0.t:noncoding" spec="ConstantPopulation">
-                            
-                <parameter id="randomPopSize.t:noncoding" name="popSize">1.0</parameter>
-                        
-            </populationModel>
-                
-        </init>
             
         <distribution id="posterior" spec="util.CompoundDistribution">
                     
@@ -251,15 +243,15 @@
             
         <operator id="YuleModelUniformOperator.t:noncoding" spec="Uniform" tree="@Tree.t:noncoding" weight="30.0"/>
             
-        <operator id="YuleModelSubtreeSlide.t:noncoding" spec="SubtreeSlide" tree="@Tree.t:noncoding" weight="15.0"/>
+        <!--operator id="YuleModelSubtreeSlide.t:noncoding" spec="SubtreeSlide" tree="@Tree.t:noncoding" weight="15.0"/>
             
         <operator id="YuleModelNarrow.t:noncoding" spec="Exchange" tree="@Tree.t:noncoding" weight="15.0"/>
             
         <operator id="YuleModelWide.t:noncoding" spec="Exchange" isNarrow="false" tree="@Tree.t:noncoding" weight="3.0"/>
             
-        <operator id="YuleModelWilsonBalding.t:noncoding" spec="WilsonBalding" tree="@Tree.t:noncoding" weight="3.0"/>
+        <operator id="YuleModelWilsonBalding.t:noncoding" spec="WilsonBalding" tree="@Tree.t:noncoding" weight="3.0"/-->
             
-        <logger id="tracelog" fileName="primate-mtDNA.log" logEvery="1000" model="@posterior" sanitiseHeaders="true" sort="smart">
+        <logger id="tracelog" fileName="primate-mtDNA.log" logEvery="10000" model="@posterior" sanitiseHeaders="true" sort="smart">
                     
             <log idref="posterior"/>
                     
@@ -301,7 +293,7 @@
                 
         </logger>
             
-        <logger id="treelog.t:noncoding" fileName="$(tree).trees" logEvery="1000" mode="tree">
+        <logger id="treelog.t:noncoding" fileName="$(tree).trees" logEvery="10000" mode="tree">
                     
             <log id="TreeWithMetaDataLogger.t:noncoding" spec="beast.evolution.tree.TreeWithMetaDataLogger" tree="@Tree.t:noncoding"/>
                 
