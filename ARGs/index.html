@@ -57,8 +57,8 @@ reveal:
 
   <p>Ignoring recombination when present:</p>
   <ul>
-    <li>Biased internal node heights times.</li>
-    <li>Biased topology.</li>
+    <li>Biases inference of internal node heights times.</li>
+    <li>Biases inference of topology.</li>
     <li>Poor mixing due to badly fitting model.</li>
   </ul>
 </section>
@@ -67,11 +67,16 @@ reveal:
   <h1>Relationship to Species Phylogenies</h1>
 
   <div style="display:inline-block;width:49%">
-    <img data-src="MSC_norecomb.svg" style="width:100%" class="fragment">
+    <img data-src="MSC_norecomb.svg" style="width:100%">
   </div>
   <div style="display:inline-block;width:49%">
     <img data-src="MSC_withrecomb.svg" style="width:100%" class="fragment">
   </div>
+
+  <ul class="fragment">
+    <li>Recombination affects gene phylogenies.</li>
+    <li>Species phylogeny may also be a network!</li>
+  </ul>
 </section>
 
 <section>
@@ -124,9 +129,9 @@ reveal:
     </ul>
 </section>
 
-<section class="center">
+<!--section class="center">
   <div style="font-weight:600;font-size:3em">CHALLENGE&nbsp;&nbsp;&nbsp;ACCEPTED</div>
-</section>
+</section-->
 
 <section>
   <h1>Wright-Fisher with Recombination</h1>
@@ -194,7 +199,6 @@ reveal:
 
     <img data-src="simulated_arg.png" style="width:100%">
 
-    (Simulated using <a href="CoalescentTreeWithRecombination.xml">this MASTER script</a>.)
 </section>
 
 <section>
@@ -216,6 +220,39 @@ reveal:
     </div>
     <img data-src="CWGC.svg" style="width:40%;display:inline-block;vertical-align:middle">
 
+</section>
+
+<section>
+    <h1>Bayesian inference of ARGs</h1>
+
+    <p>Can easily write down an expression for the posterior distribution for the  ARG given an alignment:</p>
+    <blockquote>
+        $$P(G,\rho,N,\mu|A) = \frac{1}{P(A)}P(A|G,\mu)P(G|\rho,N)P(\rho,N,\mu)$$
+    </blockquote>
+    <ul>
+        <li>$G$ is the recombination graph,</li>
+        <li>$\rho$ is the recombination rate.</li>
+    </ul>
+
+    <p>In practice, this is non-trivial since:</p>
+    <ol>
+        <li>the likelihood for $G$, $P(A|G,\mu)$, is invariant under many features of $G$,</li>
+        <li>the likelihood surface often contains many distinct peaks, and</li>
+        <li>the state space of ARGs is <b>huge</b>: much larger than for trees.</li>
+    </ol>
+
+    <p style="margin-top:1em">Despite this, many approximate algorithms exist.</p>
+</section>
+
+<section>
+    <h1>Algorithms for Bayesian ARG inference</h1>
+
+    <ul class="spaced" style="margin-top:10%">
+        <li>SMARTIE (<a class="cite" href="https://doi.org/10.1093/sysbio/syp076">Bloomquist and Suchard, 2010</a>)</li>
+        <li>ARGweaver (<a class="cite" href="http://dx.doi.org/10.1371/journal.pgen.1004342">Rasmussen et al, 2014</a>)</li>
+        <li>ClonalFrame (<a class="cite" href="https://dx.doi.org/10.1534/genetics.106.063305">Didelot and Falush, 2007</a>)</li>
+        <li>ClonalOrigin (<a class="cite" href="https://dx.doi.org/10.1534/genetics.110.120121">Didelot et al., 2010</a>)</li>
+    </ul>
 </section>
 
 <section>
@@ -260,17 +297,16 @@ reveal:
 </section>
 
 <section>
-    <h1>Why study bacterial phylogenetics?</h1>
+    <h1>Bacteria</h1>
 
     <div style="float:left; width:700px">
         <ul>
-            <li data-fragment-index="1">Bacteria play important roles (both positive and
-                negative) in the health of animals and
-                plants.</li>
-            <li data-fragment-index="2">Many bacteria possess interesting and
-                <i>experimentally accessible</i> evolutionary
+            <li>Bacteria play critical roles in the health of animals
+            and plants.</li>
+            <li>Many bacteria possess interesting
+                and <i>experimentally accessible</i> evolutionary
                 dynamics.</li>
-            <li data-fragment-index="3">Bacterial genomes are measurably evolving over
+            <li>Bacterial genomes are measurably evolving over
                 relatively short study periods.
                 <div class="figure" style="width:500px; position: relative; left: 100px">
                     <img data-src="MEP_cropped.png">
@@ -280,10 +316,10 @@ reveal:
         </ul>
     </div>
     <div style="float:right; width:250px">
-        <div class="figure fragment" data-fragment-index="1">
+        <div class="figure">
             <img data-src="EColiGut_Psa_collage.jpg">
         </div>
-        <div class="figure fragment" data-fragment-index="2">
+        <div class="figure">
             <img data-src="adaptive_radiation.jpg">
             <div class="cite">Rainey &amp; Travisano, Nature (1998)</div>
         </div>
@@ -315,7 +351,7 @@ reveal:
 
     <img data-src="conjugation.jpg" class="fragment" data-fragment-index="7"
                                                      style="position:absolute; top:100px; right:0px; height:250px;">
-    <ul>
+    <ul class="fragment">
         <li>Effect of events can be plasmid transfer, insertion or homologous recombination.</li>
         <li>Rate of recombination varies and is subject to selection.</li>
         <li>Focus on homologous recombination: only event which doesn't alter the length of the sequence.</li>
@@ -323,11 +359,11 @@ reveal:
 </section>
 
 <section>
-    <h1>The Problem for Phylogenetic Inference</h1>
+    <h1>Bacterial Recombination Rates</h1>
 
     <p>For many bacteria, the ratio between the recombination rate and the mutation rate is extremely high.</p>
 
-    <div class="figure fragment">
+    <div class="figure">
         <img data-src="r2mhist.svg" style="width:800px">
         <div class="cite">Vos and Didelot, The ISME Journal (2009)</div>
     </div>
@@ -337,7 +373,7 @@ reveal:
     <h1>The Coalescent with Gene Conversion</h1>
 
     <div style="position: relative; top:0; left:0; width:1000px; height:500px;">
-        <img data-src="WrightFisherGC1.svg"
+        <!--img data-src="WrightFisherGC1.svg"
              style="position:absolute; top:0; left:0; width:1000px; box-shadow:none; background-color:white;">
         <img data-src="WrightFisherGC2.svg" class="fragment"
             style="position:absolute; top:0; left:0; width:1000px; box-shadow:none; background-color:white;">
@@ -346,13 +382,13 @@ reveal:
         <img data-src="WrightFisherGC3b.svg" class="fragment"
             style="position:absolute; top:0; left:0; width:1000px; box-shadow:none; background-color:white;">
         <img data-src="WrightFisherGC4b.svg" class="fragment"
-            style="position:absolute; top:0; left:0; width:1000px; box-shadow:none; background-color:white;">
-        <img data-src="WrightFisherGC5b.svg" class="fragment"
+            style="position:absolute; top:0; left:0; width:1000px; box-shadow:none; background-color:white;"-->
+        <img data-src="WrightFisherGC5b.svg"
             style="position:absolute; top:0; left:0; width:1000px; box-shadow:none; background-color:white;">
     </div>
     <a class="cite" href="">Wiuf, 1999</a>; <a class="cite" href="">Wiuf and Hein, 2000</a>
 
-    <div class="fragment" style="position:absolute; top:100px; left:0px; width:350px">
+    <div style="position:absolute; top:100px; left:0px; width:350px">
         <table class="params">
             <tr><th colspan="2">Parameters</th></tr>
             <tr> <td>$N(t)g$</td> <td>Coalescence rate</td> </tr>
@@ -454,18 +490,12 @@ reveal:
     <h1>MCMC State Proposal Strategy</h1>
 
     <div style="position: relative; top:0; left:0; width:1000px; height:500px;">
-        <img data-src="collapse_expand4.svg"
-             style="position:absolute; top:0; left:0; width:1000px; box-shadow:none; background-color:white;">
-        <img data-src="collapse_expand3.svg" class="fragment"
-             style="position:absolute; top:0; left:0; width:1000px; box-shadow:none; background-color:white;">
-        <img data-src="collapse_expand2.svg" class="fragment"
-             style="position:absolute; top:0; left:0; width:1000px; box-shadow:none; background-color:white;">
-        <img data-src="collapse_expand1.svg" class="fragment"
+        <img data-src="collapse_expand1.svg"
              style="position:absolute; top:0; left:0; width:1000px; box-shadow:none; background-color:white;">
     </div>
 
     <ul>
-        <li class="fragment">Attachment points and site tracts of new conversions drawn from prior.</li>
+        <li>Attachment points and site tracts of new conversions drawn from prior.</li>
     </ul>
 </section>
 
@@ -644,4 +674,18 @@ reveal:
          <br>
          <img data-src="ointment.svg" style="width:300px;box-shadow:none;"/>
      </div>
+</section>
+
+<section>
+  <h1>Summary</h1>
+
+  <ol class="spaced" style="margin-top:5%">
+
+    <li>It is important to be aware of the role recombination plays in shaping the phylogeny of a set of samples.</li>
+    <li>Recombination networks are distinct from (nested within!) species networks.</li>
+    <li>Network inference is both statistically and computationally demanding.</li>
+    <li>Model-based methods for inferring recombination networks exist.</li>
+    <li>Within BEAST 2, the available method is Bacter, which focuses on bacterial recombination.</li>
+    <li>This method will be taught in the following tutorial!</li>
+  </ol>
 </section>
