@@ -183,7 +183,7 @@ reveal:
         recombination (<a class="cite" href="https://doi.org/10.1016/0040-5809(83)90013-8">Hudson, 1983</a>):</p>
 
         <ul>
-            <li>Coalescence rate: $T_c(k)=\binom{k}{2}\frac{1}{Ng}$</li>
+            <li>Coalescence rate: $T_c(k)=\binom{k}{2}\frac{1}{N}$</li>
             <li>Recombination rate: $T_r(k)=\rho k$.</li>
             <li>Recombination break points chosen uniformly along sequence: everything
             to the left descends from one parent, everything else to the other.</li>
@@ -284,7 +284,7 @@ reveal:
     <h1>Population inference using SMC</h1>
 
     <ul>
-        <li><a class="cite" href="http://dx.doi.org/10.1038/nature10231">Li &ampl; Durbin (2011)</a> developed an SMC-based HMM on pairs of alignments.</li>
+        <li><a class="cite" href="http://dx.doi.org/10.1038/nature10231">Li &amp; Durbin (2011)</a> developed an SMC-based HMM on pairs of alignments.</li>
         <li>Baum-Welch used to estimate parameters and hidden states (local TMRCAs).</li>
         <li>TMRCA distribution used to produce estimates of population size dynamics.</li>
     </ul>
@@ -391,7 +391,7 @@ reveal:
     <div style="position:absolute; top:100px; left:0px; width:350px">
         <table class="params">
             <tr><th colspan="2">Parameters</th></tr>
-            <tr> <td>$N(t)g$</td> <td>Coalescence rate</td> </tr>
+            <tr> <td>$1/N(t)$</td> <td>Coalescence rate</td> </tr>
             <tr> <td>$\rho_s$</td> <td>Recombination rate</td> </tr>
             <tr> <td>$\delta$</td> <td>Expected tract length</td> </tr>
         </table>
