@@ -232,6 +232,243 @@ reveal:
   
 <!-- BEAUti -->
 
+  <section>
+    <h2>BEAUti: <b>B</b>ayesian <b>E</b>volutionary <b>A</b>nalysis <b>Uti</b>lity </h2>
+
+    <div style="margin-top:5%;margin-bottom:5%">
+    Graphical tool for setting up a BEAST analysis.
+    </div>
+
+    <center>
+      <div style="width:60%">
+        <dl>
+          <dt>Input</dt>
+          <dd>Genetic sequence data, together with other data sources (locations, sample times, etc.)</dd>
+          <dt style="margin-top:5%">Output</dt>
+          <dd>Compact XML description of data, model and prior distributions.</dd>
+        </dl>
+      </div>
+    </center>
+    
+  </section>
+
+  <section>
+    <h2>BEAUti: <b>B</b>ayesian <b>E</b>volutionary <b>A</b>nalysis <b>Uti</b>lity </h2>
+
+    <center>
+    <img data-src="tools_beauti.png" style="width:80%;margin-top:0">
+    </center>
+  </section>
+
+  <section>
+    <h2>BEAUti: <b>B</b>ayesian <b>E</b>volutionary <b>A</b>nalysis <b>Uti</b>lity </h2>
+
+    <center>
+    <img data-src="tools_beauti_XML.png" style="width:70%;margin-top:0">
+    </center>
+  </section>
+
+  <section>
+    <h2>BEAST 2: <b>B</b>ayesian <b>E</b>volutionary <b>A</b>nalysis by <b>S</b>ampling <b>T</b>rees</h2>
+
+    <ul>
+      <li> Performs MCMC analyses of sequences under selected sequence evolution and tree (epidemiological/speciation) model. </li>
+      <li> Similar to BEAST 1.8.4/1.10 but completely separate and generally incompatable.</li>
+
+      <li> BEAST2 and BEAST1 have a common origin, have much of the same functionality but have diverged over time. </li>
+
+      <li> BEAST2 has a modular design that makes it easy to extend. </li>
+    </ul>
+
+    <center style="margin-top:1em">
+      <div style="width:60%">
+        <dl>
+          <dt>Input</dt>
+          <dd>XML model description file</dd>
+          <dt>Output</dt>
+          <dd><ul><li>(Trace) log file</li>
+          <li>Tree (log) file</li></ul></dd>
+        </dl>
+      </div>
+    </center>
+  </section>
+
+  
+  <section>
+    <h2>BEAST 2: <b>B</b>ayesian <b>E</b>volutionary <b>A</b>nalysis by <b>S</b>ampling <b>T</b>rees</h2>
+
+    <center style="margin-top:-1.5em">
+      <img data-src="tools_beast.png" style="width:50%">
+    </center>
+    
+  </section>
+
+  <section>
+    <h2>BEAST 2 Packages</h2>
+
+    <ul>
+      <li>BEAST 2 is organized into a central "core" together with a large number of separate "packages".</li>
+      <li>Packages can be developed by anybody - including you!</li>
+      <li>Can be directly integrated into BEAST 2 and updated frequently without waiting for a
+        full BEAST 2 release.</li>
+
+      <li>Packages add new models or completely new functionality :
+        <ul>
+          <li>Phylogeography,</li>
+          <li>bacterial ARG inference,</li>
+          <li>morphological models,</li>
+          <li>model selection and averaging,</li>
+          <li>stochastic simulations,</li>
+          <li>...</li>
+        </ul>
+          
+      <li>Install new packages through BEAUti.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>BEAST 2 Packages</h2>
+    <center>
+      <img data-src="tools_packages.png" style="width:100%">
+    </center>
+ 
+  </section>
+
+  <section>
+    <h2>Tracer (http://beast.community)</h2>
+
+    <ul class="spaced">
+      <li>Analyse (parameter) log files from BEAST2 runs</li>
+      <li>Assess mixing, ESS, ACT, parameter correlations</li>
+      <li>Provides overview of posterior parameter estimates</li>
+      <li>Comparisons of several analyses.</li>
+      <li>Tracer is primarily a diagnostic tool — usually want to perform
+        final analyses in a statistical package like R.</li>
+    </ul>
+
+    <center style="margin-top:1em">
+      <div style="width:60%">
+        <dl>
+          <dt>Input</dt>
+          <dd>One or more log files</dd>
+          <dt>Output</dt>
+          <dd>Insight</dd>
+        </dl>
+      </div>
+    </center>
+
+  </section>
+
+  <section>
+    <h2>Tracer (http://beast.community)</h2>
+
+
+    <center>
+      <div class="flipper">
+        <img data-src="tools_tracer_marginal.png" style="width:100%">
+        <img data-src="tools_tracer_trace.png" style="width:100%" class="fragment">
+        <img data-src="tools_tracer_joint_marginal.png" style="width:100%" class="fragment">
+      </div>
+    </center>
+
+  </section>
+
+  <section>
+    <h2>TreeAnnotator (included with BEAST 2)</h2>
+
+    <ul class="spaced">
+      <li>Analyse trees file from BEAST2 runs.</li>
+      <li>Produces single summary tree with node annotations  (including clade posterior probabilities).</li>
+      <li>Positions internal nodes according to average taxon set MRCA times in trees file.</li>
+      <li>Note that the MCC tree is just a heuristic summary: may produce negative edge lengths when topological uncertainty is large!</li>
+    </ul>
+
+    <center style="margin-top:1em">
+      <div style="width:60%">
+        <dl>
+          <dt>Input</dt>
+          <dd>Tree log file</dd>
+          <dt>Output</dt>
+          <dd>File containing annotated summary tree</dd>
+        </dl>
+      </div>
+    </center>
+  </section>
+
+  <section>
+    <h2>TreeAnnotator (included with BEAST 2)</h2>
+
+    <center style="margin-top:5%">
+    <img data-src="tools_treeannotator.png" style="width:70%">
+    </center>
+  </section>
+
+  <section>
+    <h2>FigTree (tree.bio.ed.ac.uk/software/figtree/)</h2>
+
+    <ul class="spaced">
+      <li> Visualise trees from BEAST2 runs.</li>
+      <li> Annotate branches and nodes with probabilities and labels.</li>
+      <li> Many different tree visualisation styles: circular, unrooted, etc.</li>
+      <li> Allows highlighting of particular clades, colouring of edges and more.</li>
+    </ul>
+
+    <center style="margin-top:1em">
+      <div style="width:60%">
+        <dl>
+          <dt>Input</dt>
+          <dd>Tree file (eg. TreeAnnotator output)</dd>
+          <dt>Output</dt>
+          <dd>Tree visualisation</dd>
+        </dl>
+      </div>
+    </center>
+
+  </section>
+
+  <section>
+    <h2>FigTree (tree.bio.ed.ac.uk/software/figtree/)</h2>
+
+    <center style="margin-top:-1em">
+      <img data-src="tools_figtree.png" style="width:90%">
+    </center>
+  </section>
+
+  <section>
+    <h2>IcyTree (icytree.org)</h2>
+    <ul class="spaced" style="margin-top:5%">
+      <li> Similar to FigTree, but places an emphasis on quick visualisation rather than
+      publication quality output.</li>
+      <li> Only rooted rectangular style visualisation supported.</li>
+      <li> Rudimentary support for phylogenetic networks.</li>
+      <li> Web app: no installation required, just visit <a href="">icytree.org</a>.</li>
+    </ul>
+  </section>
+
+
+  <section>
+    <h2>IcyTree (icytree.org)</h2>
+    <center style="margin-top:-1em">
+      <img data-src="tools_icytree.png" style="width:85%">
+    </center>
+  </section>
+
+  <section>
+    <h2>ggtree<br>(guangchuangyu.github.io/software/ggtree/)</h2>
+
+    <ul class="spaced" style="margin-top:5%">
+      <li>R-package to visualise trees using something like Hadley Wickham's grammar of graphics (ggplot)</li>
+      <li>Works with BEAST2 tree files (and many other packages)</li>
+      <li>Can be easily annotate trees with other analyses in R</li>
+    </ul>
+
+    <div style="display:flex; align-items:center; justify-content:space-between;margin-top:5%">
+      <img data-src="tools_ggtree1.png" style="height:200px">
+      <img data-src="tools_ggtree2.png" style="height:200px">
+      <img data-src="tools_ggtree3.png" style="height:200px">
+    </div>
+  </section>
+  
 <!-- BEAST -->
 
 <!-- Tracer -->
