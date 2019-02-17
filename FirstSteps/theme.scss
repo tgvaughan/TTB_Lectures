@@ -175,6 +175,10 @@ table.params td:first-child {
         margin-top: 1em;
 }
 
+.spaced > dt:not(:first-child) {
+        margin-top: 1em;
+}
+
 
 .reveal div.flipper {
     position: relative;
