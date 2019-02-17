@@ -1,0 +1,221 @@
+---
+title: First Steps in BEAST 2
+reveal:
+    center: false
+    history: true
+    slideNumber: true
+    theme: theme.css
+---
+
+<section class="titlepage center"
+         data-background="sydney.jpg">
+  <div class="title">First Steps with BEAST 2</div>
+  <!--div class="subtitle">With a particular focus on Bacterial Recombination</div-->
+
+  <div class="authors" style="margin-top:5%">Tim Vaughan<br>
+  (Slides adapted from lecture given by Louis du Plessis)</div>
+
+  <div class="institution">cEvo group, D-BSSE, The ETH Zurich</div>
+
+  <div class="date">Taming the BEAST, 18<sup>th</sup> Feb, 2019</div>
+
+  <div class="logos" style="margin-top:5%">
+    <img data-src="Taming-the-BEAST-Down-Under-Logo.png" style="width:200px">
+    <img data-src="cEvo_logo_white.png" style="width:200px">
+    <img data-src="eth_logo_white.png" style="width:200px">
+  </div>
+
+</section>
+
+<section>
+  <section class="center">
+    <h1>Why are we here?</h1>
+  </section>
+
+  <section>
+    <h2>We all have one thing in common...</h2>
+
+    <img data-src="beast_to_data.png" style="width:100%;margin-top:10%">
+
+    <p style="text-align:center">We all use (or want to use) BEAST 2 to analyse our data.</p>
+
+    <div class="fragment">
+      But <i>how?</i>
+    </div>
+
+  </section>
+
+  <section>
+    <h2>Bayesian inference</h2>
+
+    <div class="flipper" style="margin-top:10%; height:4em;">
+      <div style="height:4em">
+        \begin{equation*}
+        P(\color{blue}{\text{model params}}|\color{darkorange}{\text{data}}) =
+        \frac{P(\color{darkorange}{\text{data}}|\color{blue}{\text{model params}})P(\color{blue}{\text{model params}})}{P(\color{darkorange}{\text{data}})}
+        \end{equation*}
+      </div>
+
+      <div class="fragment" style="height:4em">
+        \begin{equation*}
+        \text{Posterior} = \frac{\text{Likelihood}\times\text{Prior}}{\text{Model Evidence}}
+        \end{equation*}
+      </div>
+    </div>
+
+    <dl class="fragment">
+      <dt>Prior</dt>
+      <dd>Original probability for the model parameters/components. All parameters have priors, whether you specify them or not!</dd>
+      <dt>Posterior</dt>
+      <dd>Updated probability for the model parameters in light of the data.</dd>
+      <dt>Likelihood</dt>
+      <dd>Probability of data give parameters (defined by model).</dd>
+      <dt>Model Evidence</dt>
+      <dd>Probability for data given model (any combination of parameters): used for Bayesian model selection.</dd>
+    </dl>
+  </section>
+
+  <section>
+    <h2>What goes into a BEAST 2 Model?</h2>
+
+
+    <div class="flipper">
+    <img data-src="model_components.png" style="width:100%">
+    <img data-src="model_components1.png" style="width:100%" class="fragment">
+    </div>
+  </section>
+
+  <section>
+    <h2>The Data</h2>
+
+    <ul>
+      <li>Typically an alignment of RNA or DNA sequences.</li>
+      <li>Can also be an amino acid sequence.</li>
+      <li>Often split into multiple "partitions" to allow specific sites
+        to evolve at diffferent rates, e.g.
+        <ul>
+          <li>Coding/non-coding sites,</li>
+          <li>Different codon positions (1+2 vs 3).</li>
+        </ul>
+      <li>Not necessarily composed of genetic sequences!</li>
+    </ul>
+
+    <div style="display:flex;justify-content:space-between">
+      <img data-src="morphology.png" style="height:20%" class="fragment">
+      <img data-src="linguistics.png" style="height:20%" class="fragment">
+    </div>
+    
+  </section>
+
+  <section>
+    <h2>What goes into a BEAST 2 Model?</h2>
+
+    <img data-src="model_components2.png" style="width:100%">
+  </section>
+
+  <section>
+    <h2>The Genealogy</h2>
+
+    <p>The fundamental genealogical structure in BEAST 2 is the rooted time tree:</p>
+    <img data-src="time_tree.png" style="width:100%;margin-top:3%">
+
+    <ul style="margin-top:3%">
+      <li>This tree is a "sampled" or "reconstructed" tree.</li>
+      <li>Displays relationships between sampled individuals/taxa only.</li>
+      <li>In contrast to the "full" tree including unsampled individuals/taxa.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>What goes into a BEAST 2 Model?</h2>
+
+    <img data-src="model_components3.png" style="width:100%">
+  </section>
+
+  <section>
+    <h2>Different population dynamics produce different phylogenetic tree shapes</h2>
+
+    <img data-src="phylodynamics.png" style="width:90%">
+  </section>
+
+  <section>
+    <h2>Demographic model</h2>
+
+    <img data-src="birth-death_tree.png" style="width:80">
+
+    <ul>
+      <li>Describes the population (incl. individuals/species/etc.) dynamics.</li>
+      <li>How does a population of organisms change through time?</li>
+      <li>How does the species richness change through time?</li>
+      <li>Described by the "tree prior".</li>
+      <li>Usually a birth-death or coalescent model.</li>
+    </ul>
+  </section>
+    
+
+  <section>
+    <h2>What goes into a BEAST 2 Model?</h2>
+
+    <img data-src="model_components4.png" style="width:100%">
+  </section>
+
+  <section>
+    <h2>Site model</h2>
+
+    <img data-src="site_model.png" style="width:100%">
+
+    <ul>
+      <li> Links the genome sequences to the genealogy. </li>
+      <li> We observe sequences at the tips, not their histories. </li>
+      <li> Multiple substitutions at the same site means not all substitutions are observed. </li>
+      <li> Site model describes rates of substitution between available characters relative to genetic distance, as well as equilibrium frequencies of characters.</li>
+      <li> May also permit site-to-site rate variation. </li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>What goes into a BEAST 2 Model?</h2>
+
+    <img data-src="model_components5.png" style="width:100%">
+  </section>
+
+  <section>
+    <h2>Clock model</h2>
+
+    <img data-src="clock_model.png" style="width:100%">
+
+    <ul>
+      <li>Determines how quickly sequences are evolving along the tree.</li>
+      <li>Different tree edges may have the same or different clock rates:
+        <ul>
+          <li>Strict clock models: all edges have equal rates</li>
+          <li>Relaxed clock models: edges may take different rates</li>
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+</section>
+
+<section>
+  <section class="center">
+    <h1>Tools of the Trade</h1>
+  </section>
+  
+<!-- BEAUti -->
+
+<!-- BEAST -->
+
+<!-- Tracer -->
+
+<!-- TreeAnnotator -->
+
+<!-- Figtree/IcyTree/ggtree -->
+
+</section>
+
+<section>
+  <section class="center">
+    <h1>Tutorial</h1>
+  </section>
+</section>
