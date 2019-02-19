@@ -78,33 +78,33 @@ reveal:
 <section>
   <h1>Why use sequence data?</h1>
 
-  <div style="margin-top:10%;display:flex;align-items:center">
-    <div style="width:50%">
-      <ul>
-        <li>Sequence data can allow migration/transmission patterns (i.e. who infected whom) to be uncovered.</li>
-      </ul>
+    <div class="figure">
+      <img data-src="HIV_zoonosis.png" style="width:40%"><br>
+      <div style="citation">Hahn et al., Science, 2000</div>
     </div>
 
-    <div style="width:49%">
-      <img data-src="HIV_zoonosis.png" style="height:300px"><br>
-      <span style="font-size:0.5em">Hahn et al., Science, 2000</span>
-    </div>
+    <blockquote>
+      Sequence data can allow migration/transmission patterns
+      (i.e. who infected whom) to be uncovered.
+    </blockquote>
+</section>
+  
+<section>
+  <h1>Why use sequence data?</h1>
+
+  <div style="width:100%; height:300px; position:relative">
+    <img data-src="popdyn_figure.png" style="position:absolute;top:0;left:0;width:1000px">
+    <img class="fragment" data-src="popdyn_figure_samp.png" style="position:absolute;top:0;left:0;width:1000px">
+    <img class="fragment" data-src="popdyn_figure_treesamp.png" style="position:absolute;top:0;left:0;width:1000px">
   </div>
+  Time $\longrightarrow$
 
-  <div>
-    <div style="width:50%">
-      <ul>
-        <li>Sequence data permit inference of events prior to the earliest sample.
-        Very important for macroevolution!  Also for epidemiology.</li>
-      </ul>
-    </div>
+  <br>
+  <br>
 
-    <div style="width:49%">
-      <img data-src="">
-    </div>
-  </div>
-
-
+  <blockquote class="fragment">
+    Genetic samples yield trees: information about events <b>ancestral</b> to samples.
+  </blockquote>
 </section>
 
 <section>
@@ -113,18 +113,18 @@ reveal:
   <ul>
     <li class="fragment">Coalescent models
       <ul>
-        <li class="fragment">Originally developed by John Kingman in a series of papers in 1982.</li>
-        <li class="fragment">Extensions for dynamics and structured populations introduced by several authors.</li>
+        <li>Originally developed by John Kingman in a series of papers in 1982.</li>
+        <li>Extensions for dynamics and structured populations introduced by several authors.</li>
       </ul>
     </li>
 
     <li class="fragment" style="margin-top:5%">Birth-death models
       <ul>
-        <li class="fragment">Theory for
+        <li>Theory for
         completely sampled contemporaneous trees developed by
         Elizabeth Thompson in her 1975 book "Human Evolutionary
         Trees".</li>
-        <li class="fragment">Theory for trees conditioned on number of samples and extensions to incomplete sampling, sampling through time, structured populations, etc. developed by Tanja Stadler from 2008.</li>
+        <li>Theory for trees conditioned on number of samples and extensions to incomplete sampling, sampling through time, structured populations, etc. developed by Tanja Stadler from 2008.</li>
       </ul>
     </li>
   </ul>
