@@ -344,7 +344,35 @@ reveal:
 
 <section>
   <h1>The sampled tree probability</h1>
+
+  <div class="flipper">
+    <img data-src="bd_treeprob1.svg">
+    <img data-src="bd_treeprob2.svg" class="fragment">
+    <img data-src="bd_treeprob3.svg" class="fragment">
+  </div>
+  
 </section>
+
+<section>
+  <h1>The sampled tree probability</h1>
+
+  <center>
+    <img data-src="bd_treeprob3.svg" style="width:50%">
+  </center>
+
+  \begin{align*}
+  g(t+\Delta t) =& (1 - \Delta t (\lambda + \mu + \psi)) g(t)  + \Delta t\lambda g(t) p_0(t) \times 2
+  \end{align*}
+
+  <p>Gives rise to differential equations which can be solved to obtain
+  the following tree probability:
+  \begin{equation*}
+  P(T|\lambda,\mu,\psi,r,t_0) = g(t_0) =\lambda^{n+m-1}\psi^{k+m}(4\rho)^n\prod_{i=0}^{n+m-1}\frac{1}{q(x_i)}\prod_{i=1}^{m}p_0(y_i)q(y_i)
+  \end{equation*}
+  where $q(t)=4\rho/g(t)$. <a href="" class="cite">[Stadler, J. Theor. Biol., 2010]</a></p>
+  
+</section>
+
 
 <section>
   <h1>Birth-death parameterizations</h1>
@@ -353,16 +381,16 @@ reveal:
   $\lambda,\mu,\psi$ parameterization, including:</p>
 
   <dl>
-    <dt>Epidemiological parameterization:</dt>
-    <dd>
+    <dt class="fragment" data-fragment-index="1">Epidemiological parameterization:</dt>
+    <dd class="fragment" data-fragment-index="1">
       <ul>
         <li>Effective reproductive number $R_e$ ($=\lambda/(\mu + r\psi$)</li>
         <li>Becoming uninfectious rate $\mu+r\psi$</li>
         <li>Sampling proportion $\psi/(\psi+\mu)$</li>
       </ul>
     </dd>
-    <dt style="margin-top:1em">Macroevolutionary parameterization:</dt>
-    <dd>
+    <dt class="fragment" data-fragment-index="2" style="margin-top:1em">Macroevolutionary parameterization:</dt>
+    <dd class="fragment" data-fragment-index="2">
       <ul>
         <li>Species diversification rate $\lambda - \mu$</li>
         <li>Turnover rate $\mu/\lambda$</li>
