@@ -1,0 +1,753 @@
+---
+title: Bayesian Phylodynamics
+reveal:
+    center: false
+    history: true
+    slideNumber: true
+    theme: theme.css
+---
+
+<section class="titlepage center">
+  <div class="title">Bayesian Phylodynamics</div>
+
+  <div class="authors">Tim Vaughan, Jana Huismann, Nicola Müller</div>
+
+  <div class="institution">cEvo group, D-BSSE, The ETH Zurich</div>
+
+  <div class="date">Taming the BEAST, 18<sup>th</sup> Feb, 2019</div>
+
+  <div class="logos">
+    <img data-src="Taming-the-BEAST-Down-Under-Logo.png" style="width:200px">
+    <img data-src="cEvo_logo.png" style="width:200px">
+    <img data-src="eth_logo.png" style="width:200px">
+  </div>
+</section>
+
+<section>
+  <h1>What is a Population?</h1>
+
+  <div style="align:center">
+    <img style="height:250px;margin-right:20px;margin-bottom:0px" data-src="viruses.jpg">
+    <img style="height:250px;margin-bottom:0px" data-src="lemurs.jpg">
+    <img style="height:250px;margin-top:0px;padding-top:0px" data-src="species.jpg">
+  </div>
+</section>
+
+<section>
+  <h1>What is Phylodynamics?</h1>
+  <ul>
+    <li>What does a phylogenetic tree tell us about a population?</li>
+    <li>Places the emphasis on the population itself instead of the subset of individuals involved in a particular phylogeny.</li>
+  </ul>
+
+  <img data-src="phylodynamics.svg"/>
+
+  <ul>
+    <li>Term introduced by Grenfell et al. (2004) in the context of epidemiology, but modern phylodynamic methods are much more generally applied.</li>
+  </ul>
+</section>
+
+<section class="center">
+  <h1>Connecting the dots...</h1>
+
+  <div class="flipper">
+    <img data-src="connecting_dots1.svg">
+    <img data-src="connecting_dots2.svg" class="fragment">
+    <img data-src="connecting_dots3.svg" class="fragment">
+    <!--img data-src="connecting_dots4.svg" class="fragment"-->
+    <img data-src="connecting_dots5.svg" class="fragment">
+  </div>
+</section>
+
+<section>
+  <h1>Bayesian phylodynamics</h1>
+
+  <img data-src="Data_generation.svg" style="width:80%;text-align:center">
+
+  <ul class="spaced">
+    <li>Generative models connect the population dynamics model to the observed sequence alignment.</li>
+    <li>Use Bayesian inference to work backwards:</li>
+  </ul>
+
+  <div class="flipper">
+    <img data-src="Posterior_treeprior_nohl.svg">
+    <img data-src="Posterior_treeprior.svg" class="fragment">
+  </div>
+</section>
+
+<section>
+  <h1>Why use genetic data?</h1>
+</section>
+
+<section>
+  <h1>Classes of phylodynamic models</h1>
+
+  <ul>
+    <li class="fragment">Coalescent models
+      <ul>
+        <li class="fragment">Originally developed by John Kingman in a series of papers in 1982.</li>
+        <li class="fragment">Extensions for dynamics and structured populations introduced by several authors.</li>
+      </ul>
+    </li>
+
+    <li class="fragment" style="margin-top:5%">Birth-death models
+      <ul>
+        <li class="fragment">Theory for
+        completely sampled contemporaneous trees developed by
+        Elizabeth Thompson in her 1975 book "Human Evolutionary
+        Trees".</li>
+        <li class="fragment">Theory for trees conditioned on number of samples and extensions to incomplete sampling, sampling through time, structured populations, etc. developed by Tanja Stadler from 2008.</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <div style="display:flex;justify-content:space-around">
+    <img data-src="maxtree1.png">
+    <img data-src="maxtree2.png">
+  </div>
+  <div style="font-size:0.8em">E.A. Thompson, "Human Evolutionary Trees", C.U.P. 1975</div>
+</section>
+
+
+<section class="center">
+  <h1>Questions?</h1>
+</section>
+
+<section>
+  <section class="center">
+    <h1>Birth-death models</h1>
+  </section>
+
+<section>
+  <h1>Birth-death population dynamics</h1>
+
+  <ul>
+    <li class="fragment">Population size described by a positive integer.</li>
+    <li class="fragment">Changes through time according to a continuous time Markov process, similar to the substitution models we've already seen.</li>
+  </ul>
+  <p class="fragment">Can use a chemical reaction notation to describe rates and effects of possible events:</p>
+  <dl class="fragment">
+    <dt>Birth:</dt>
+    <dd>$$X\overset{\lambda}{\longrightarrow} 2X$$</dd>
+    <dt>Death:</dt>
+    <dd>$$X\overset{\mu}{\longrightarrow} 0$$</dd>
+  </dl>
+  <p class="fragment">The parameters $\lambda$ and $\mu$ are probabilities per [time unit] that any given individual experiences a birth or a death.</p>
+
+</section>
+
+
+<section>
+  <h1>Example BD dynamics</h1>
+
+  <div id="bdExample" style="width:1000px; height:500px">
+    <script>
+      function getBDTrace() {
+          var lambda = 1.2;
+          var mu = 0.9;
+          var tmax=10.0;
+
+          var N = [1];
+          var t = [0.0];
+          while (true) {
+              var thisN = N[N.length-1];
+              var thist = t[t.length-1];
+              
+              var a_birth = lambda*thisN;
+              var a_death = mu*thisN;
+              var a0 = a_birth + a_death;
+
+              var dt;
+              if (a0>0.0)
+                  dt = -Math.log(Math.random())/a0;
+              else
+                  dt = Infinity
+
+              thist += dt;
+
+              if (thist>tmax) {
+                  t.push(tmax);
+                  N.push(thisN);
+                  break;
+              }
+
+              t.push(thist);
+
+              if (Math.random()*a0 < a_birth)
+                  N.push(thisN + 1);
+              else
+                  N.push(thisN - 1);
+          }
+
+          return {x: t, y: N, mode: 'lines', line: {width: 2, shape: 'hv'}};
+      }
+
+      function singleBDplot() {
+          target = document.getElementById('bdExample');
+
+          Plotly.newPlot(target,
+                         [getBDTrace()],
+                         { 
+                             margin: { t: 20 },
+                             xaxis: {title: "Time"},
+                             yaxis: {title: "Population size"},
+                             font: {size: 20}
+                         },
+                         {displayModeBar: false});
+      }
+
+      singleBDplot();
+     
+    </script>
+
+    <div style="text-align:right;font-size:0.5em">
+      <a href="" onclick="singleBDplot(); return false;">Regenerate</a>
+    </div>
+  </div>
+</section>
+
+
+<section>
+  <h1>Example BD dynamics</h1>
+
+  <div id="bdEnsembleTraj" style="width:550px;height:500px;display:inline-block">
+  </div>
+  <div id="bdEnsembleHist" style="width:400px;height:500px;display:inline-block">
+  </div>
+
+  <script>
+    function ensemblePlot() {
+        var traces = [];
+
+        var nTraces = 400;
+        for (var i=0; i<nTraces; i++) {
+            traces.push(getBDTrace());
+            traces[traces.length-1].line.width = 1;
+            traces[traces.length-1].line.color = 'rgb(10,70,70)';
+            traces[traces.length-1].opacity = 0.2;
+        }
+
+        var trajTarget = document.getElementById('bdEnsembleTraj');
+        Plotly.newPlot(trajTarget, traces,
+                       { 
+                           showlegend: false,
+                           margin: { t: 20 },
+                           xaxis: {title: "Time"},
+                           yaxis: {title: "Population size"},
+                           font: {size: 20}
+                       },
+                       {displayModeBar: false});
+
+        var finalSizes = [];
+        for (i=0; i<nTraces; i++) {
+            var finalSize = traces[i].y[traces[i].y.length-1];
+            finalSizes.push(finalSize);
+        }
+
+        var histTarget = document.getElementById('bdEnsembleHist');
+        Plotly.newPlot(histTarget,
+                      [ {x: finalSizes, type: 'histogram'} ],
+                      {
+                          margin: { t: 20, l: 50, r: 0 },
+                           xaxis: {title: "Final pop. size"},
+                          font: {size: 20}
+                      },
+                      {displayModeBar: false});
+    }
+
+    ensemblePlot();
+  </script>
+
+  <div style="text-align:right;font-size:0.5em">
+    <a href="" onclick="ensemblePlot(); return false;">Regenerate</a>
+  </div>
+
+</section>
+
+<section>
+  <h1>Birth-death branching process</h1>
+
+  <div class="flipper">
+    <img data-src="bd_branching1.svg">
+    <img data-src="bd_branching2.svg" class="fragment">
+    <img data-src="bd_branching3.svg" class="fragment">
+    <img data-src="bd_branching4.svg" class="fragment">
+    <img data-src="bd_branching5.svg" class="fragment">
+    <img data-src="bd_branching6.svg" class="fragment">
+  </div>
+
+</section>
+
+<section>
+  <h1>Birth-death-sampling process</h1>
+
+  <ul>
+    <li class="fragment">The birth-death sampling process extends the birth-death process by incorporating a <b>model for sample generation</b>.</li>
+    <li class="fragment">This can be described using the following reactions:
+      <ul>
+        <li><b style="padding-right:3em">Birth:</b> $X\overset{\lambda}{\longrightarrow}2X$</li>
+        <li><b style="padding-right:3em">Death:</b> $X\overset{\mu}{\longrightarrow}0$</li>
+        <li><b style="padding-right:3em">Sampling (with removal):</b> $X\overset{r\psi}{\longrightarrow}0$</li>
+        <li><b style="padding-right:3em">Sampling without removal:</b> $X\overset{(1-r)\psi}{\longrightarrow}X$</li>
+      </ul>
+  </ul>
+
+  <p class="fragment">Additionally, the model allows each surviving lineage at the end of the process (present day) to be sampled with probability $\rho$.</p>
+</section>
+
+<section>
+  <h1>Birth-death-sampling trees</h1>
+
+  <div class="flipper">
+    <img data-src="bds_trees1.svg">
+    <img data-src="bds_trees2.svg" class="fragment">
+    <img data-src="bds_trees3.svg" class="fragment">
+    <img data-src="bds_trees4.svg" class="fragment">
+    <img data-src="bds_trees5.svg" class="fragment">
+    <img data-src="bds_trees6.svg" class="fragment">
+    <img data-src="bds_trees7.svg" class="fragment">
+    <img data-src="bds_trees8.svg" class="fragment">
+    <img data-src="bds_trees9.svg" class="fragment">
+    <img data-src="bds_trees10.svg" class="fragment">
+
+</section>
+
+<section>
+  <h1>The sampled tree probability</h1>
+</section>
+
+<section>
+  <h1>Birth-death parameterizations</h1>
+
+  <p>There are several distinct parameterizations besides the basic
+  $\lambda,\mu,\psi$ parameterization, including:</p>
+
+  <dl>
+    <dt>Epidemiological parameterization:</dt>
+    <dd>
+      <ul>
+        <li>Effective reproductive number $R_e$ ($=\lambda/(\mu + r\psi$)</li>
+        <li>Becoming uninfectious rate $\mu+r\psi$</li>
+        <li>Sampling proportion $\psi/(\psi+\mu)$</li>
+      </ul>
+    </dd>
+    <dt style="margin-top:1em">Macroevolutionary parameterization:</dt>
+    <dd>
+      <ul>
+        <li>Species diversification rate $\lambda - \mu$</li>
+        <li>Turnover rate $\mu/\lambda$</li>
+        <li>Fossilization rate $\psi$</li>
+      </ul>
+    </dd>
+  </dl>
+</section>
+
+<section>
+  <h1>Extension: time-dependence</h1>
+
+  <ul>
+    <li>The birth-death skyline model allows piecewise-constant variation in rate parameters.</li>
+  </ul>
+
+  <center>
+  <img data-src="bdsky.png" style="width:80%">
+  </center>
+  <div style="text-align:right">
+    <a href="" class="cite">Stadler et al., 2013</a>
+  </div>
+</section>
+
+<section>
+  <h1>Example: Hepatitis C in Egypt</h1>
+
+  <ul>
+    <li>Effective reproductive number $R_e(t)$ generalizes basic reproductive number $R_0=R_e(0)$.</li>
+    <li>Analysis of 63 sequences, $R_e(t)=\lambda(t)/\mu(t)$.</li>
+  </ul>
+  <img data-src="hcv_bdsky.svg" style="width:100%">
+  <div style="text-align:right">
+    <a href="" class="cite">Stadler et al., 2013</a>
+  </div>
+</section>
+
+<section>
+  <h1>Birth-death model assumptions</h1>
+
+  <ol class="spaced" style="margin-top:5%">
+    <li class="fragment">Samples are members of a stochastically varying population that is on average exponentially growing with rate $\lambda-(\mu+r\psi)$.</li>
+
+    <li class="fragment">Sample fraction can be small, large or complete - tree prior is still valid.</li>
+
+    <li class="fragment">Sample number and times are assumed to be produced according to the model: deviation from this assumption results in biased inferences.</li>
+
+    <li class="fragment">Population is "well mixed", samples are drawn randomly.</li>
+  </ol>
+    
+</section>
+
+
+</section>
+
+<section class="center">
+  <h1>Questions?</h1>
+</section>
+
+
+<section>
+  <section class="center">
+    <h1>Coalescent phylodynamics</h1>
+  </section>
+
+  
+<section>
+  <h1>The Wright-Fisher Model</h1>
+
+  <div class="flipper" style="height:600px">
+    <img data-src="WF1.svg" class="fragment">
+    <img data-src="WF2.svg" class="fragment">
+    <img data-src="WF3.svg" class="fragment">
+    <img data-src="WF4.svg" class="fragment">
+    <img data-src="WF5.svg" class="fragment">
+    <img data-src="WF6.svg" class="fragment">
+  </div>
+
+  <!-- assumptions -->
+</section>
+
+<section>
+  <h1>Wright-Fisher Model Assumptions</h1>
+
+  <img data-src="WF6.svg" style="width:50%">
+
+  <ul>
+    <li>Discrete generations.</li>
+    <li class="fragment">Individuals identical. (No structure.)</li>
+    <li class="fragment">Fixed offspring distribution (mean of 1)</li>
+    <li class="fragment">Constant + finite population size.</li>
+    <li class="fragment">An interpretation: population at equilibrium (carrying capacity).</li>
+  </ul>
+
+</section>
+
+<section>
+  <h1>Sampled WF phylogeny</h1>
+
+  <div class="flipper">
+    <img data-src="WFsamp1.svg">
+    <img data-src="WFsamp2.svg" class="fragment">
+    <img data-src="WFsamp3.svg" class="fragment">
+    <img data-src="WFsamp4.svg" class="fragment">
+    <img data-src="WFsamp5.svg" class="fragment">
+    <img data-src="WFsamp6.svg" class="fragment">
+    <img data-src="WFsamp7.svg" class="fragment">
+  </div>
+</section>
+
+<section>
+  <h1>Sampled WF phylogeny</h1>
+
+    <img data-src="WFsamp7.svg" style="width:70%">
+
+    <ul>
+      <li>Generations between internal nodes related to population size.</li>
+      <li class="fragment">Can we quantify this relationship?</li>
+    </ul>
+</section>
+
+<section>
+  <h1>Sampled 2-individual phylogeny</h1>
+
+  <div class="flipper" style="height:400px">
+    <img data-src="WF2sampCoal1.svg">
+    <img data-src="WF2sampCoal2.svg" class="fragment">
+    <img data-src="WF2sampCoal3.svg" class="fragment">
+    <img data-src="WF2sampCoal4.svg" class="fragment">
+    <img data-src="WF2sampCoal5.svg" class="fragment">
+    <img data-src="WF2sampCoal6.svg" class="fragment">
+    <img data-src="WF2sampCoal7.svg" class="fragment">
+    <img data-src="WF2sampCoal8.svg" class="fragment">
+    <img data-src="WF2sampCoal9.svg" class="fragment">
+    <img data-src="WF2sampCoal10.svg" class="fragment">
+    <img data-src="WF2sampCoal11.svg" class="fragment">
+  </div>
+  
+  <p class="fragment">
+    Probability of coalescence in generation $i-m$:
+    $P(m)=(1-p_{\textrm{coal}})^{m-1}p_{\textrm{coal}}$
+  </p>
+
+  <p class="fragment">
+    Continuous time limit (large $N$, small $g$): $P(t)=e^{-\frac{1}{Ng}t}\frac{1}{Ng}$
+  </p>
+
+  <!-- properties: geometric distribution -->
+</section>
+
+<section>
+  <h1>The exponential distribution</h1>
+
+
+  <div id="expDistPlot" style="width:1000px;height:500px">
+    <script>
+      target = document.getElementById('expDistPlot');
+
+      var tarr = [];
+      var p1 = [];
+      var p2 = [];
+      var p3 = [];
+      var tmax = 3.0;
+      for (var t=0; t<=tmax; t+= tmax/500) {
+          tarr.push(t);
+          p3.push(Math.exp(-2*t)*2);
+          p1.push(Math.exp(-t));
+          p2.push(Math.exp(-0.5*t)*0.5);
+      }
+
+      var trace1 = {x: tarr, y: p1, name: 'Ng=0.5', line: {width: 4}};
+      var trace2 = {x: tarr, y: p2, name: 'Ng=1', line: {width: 4}};
+      var trace3 = {x: tarr, y: p3, name: 'Ng=2', line: {width: 4}};
+
+      Plotly.plot(target,
+                  [trace1, trace2, trace3],
+                  { 
+                      margin: { t: 0 },
+                      xaxis: {title: "Time before present"},
+                      yaxis: {title: "Probability density"},
+                      font: {size: 20}
+                  },
+                  {displayModeBar: false});
+    </script>
+  </div>
+</section>
+
+<section>
+
+  <h1>Sampled k-individual phylogeny</h1>
+  <div class="flipper" style="height:400px">
+    <img data-src="WF3sampCoal1.svg">
+    <img data-src="WF3sampCoal2.svg" class="fragment">
+    <img data-src="WF3sampCoal3.svg" class="fragment">
+    <img data-src="WF3sampCoal4.svg" class="fragment">
+  </div>
+
+  <p class="fragment">
+    <b>Question:</b> How can this be generalized to $k$ samples?
+  </p>
+  <p class="fragment">
+    <b>Answer:</b> $p_{\text{coal}}=\frac{k(k-1)}{2}\frac{1}{N}=\binom{k}{2}\frac{1}{N}$
+  </p>
+
+</section>
+
+<section>
+  <h1>Kingman's coalescent</h1>
+
+  <div style="display:inline-block;vertical-align:middle;width:60%" class="spaced">
+    <ul>
+      <li>Backward-time Markov process which produces 
+        sampled time trees.</li>
+      <li class="fragment">Equivalent to sampled trees produced by WF
+        model when $N\gg k$ and $g\ll 1$.</li>
+      <li class="fragment">Times between coalescence events drawn
+        from exponential distributions with rate $\binom{k}{2}\frac{1}{Ng}$.</li>
+      <li class="fragment">Interesting: expected time to MRCA is always $\leq \frac{2}{Ng}$, regardless of how many samples there are.</li>
+    </ul>
+  </div>
+  <div style="display:inline-block;vertical-align:middle;width:39%">
+    <img data-src="simulated_coal_trees.svg">
+  </div>
+</section>
+
+<section>
+  <h1>Effective population size</h1>
+
+  <ul>
+    <li>If a real population were described precisely by a Wright-Fisher model with generation time $g$, the $N$ parameter in the coalescent would correspond to the real population size.</li>
+    <li class="fragment">However, real populations are more complicated:
+      <ul>
+        <li>Random mating assumption is often violated,</li>
+        <li>Offspring distribution may differ from that assumed by WF,</li>
+        <li>Generations may be overlapping,</li>
+        <li>...</li>
+      </ul>
+      <li class="fragment">We therefore define the <b>effective population size</b>
+      $N_e$ to be the size of a statistically equivalent WF population.
+      (We often also absorb other parameters such as $g$, the clock
+      rate and ploidy into this number.)</li>
+  </ul>
+  
+</section>
+
+<section>
+  <h1>Probability of a coalescent tree</h1>
+
+  <center>
+  <div class="flipper" style="width:70%;height:400px">
+    <img data-src="coalProb1.svg">
+    <img data-src="coalProb2.svg" class="fragment">
+  </div>
+  </center>
+
+  <div class="fragment" style="margin-top:5%">
+    \begin{equation}
+    P(T|N_e)=\prod_{i=1}^{n-1}\left(\exp\left[-\Delta t_i\binom{k_i}{2}\frac{1}{N_e}\right]\frac{1}{N_e}\right)
+    \end{equation}
+  </div>
+</section>
+
+<section>
+  <h1>Coalescent-based inference</h1>
+
+  <ul>
+    <li>We can therefore infer demographic parameters like $N_e$ given a known phylogeny!</li>
+  </ul>
+
+  $L(N_e|T)=P(T|N_e)$
+
+  <div style="width:100%;margin-top:10%">
+    <div id="coalDensity"
+         style="width:400px;height:300px;display:inline-block;vertical-align:middle">
+    <script>
+      target = document.getElementById('coalDensity');
+
+      var Ne = [];
+      var p = [];
+      var minNe=2.0;
+      var maxNe=5.0;
+      for (var thisNe=minNe; thisNe<=maxNe; thisNe += (maxNe-minNe)/200) {
+          Ne.push(thisNe);
+          p.push(-(12*0.5/thisNe + 3*1/thisNe + 1*1.3/thisNe) - 3*Math.log(thisNe));
+      }
+
+      var trace = {x: Ne, y: p, name: 'Ng=0.5', line: {width: 4}};
+
+      Plotly.plot(target,
+                  [trace],
+                  { 
+                      margin: { t: 0 },
+                      xaxis: {title: "N"},
+                      yaxis: {title: "log L(N|T)"},
+                      font: {size: 20}
+                  },
+                  {displayModeBar: false});
+    </script>
+  </div>
+  <div style="width:500px;display:inline-block;vertical-align:middle">
+    <img data-src="coalProb2.svg">
+  </div>
+  </div>
+</section>
+
+
+<section>
+  <h1>Extension: population size changes</h1>
+
+  <div>
+    <img data-src="WFpopDyn.jpg">
+    <a href="" class="cite">K&uuml;hnert et al., 2011</a>
+</section>
+
+<section>
+  <h1>Non-parametric: Skyline plot</h1>
+
+  <center>
+  <div class="flipper" style="width:80%;height:550px;text-align:center">
+    <img data-src="skyline_schematic1.svg" style="width:100%">
+    <img data-src="skyline_schematic2.svg" style="width:100%" class="fragment" data-fragment-index="2">
+  </div>
+  </center>
+  <ul style="margin-top:-2em" class="fragment" data-fragment-index="2">
+    <li>Due to <a href="" class="cite">Pybus, Rambaut and Harvey, 2000</a>.</li>
+    <li>Directly yields ML estimates of population size in each interval.</li>
+  </ul>
+  
+</section>
+
+<section>
+  <h1>Bayesian skyline</h1>
+
+  <ul class="spaced" style="margin-top:5%">
+    <li class="fragment">Piecewise-constant population model: population size can only
+    change at a fixed number of break points. Each time interval can
+    contain several coalescent intervals.</li>
+
+    <li class="fragment">Uses MCMC to integrate over all possible break point positions in addition to $N_e$ within each time interval.</li>
+
+    <li class="fragment">Graphs of marginal probability of population size vs time
+    appear smoothed due to averaging over possible histories.</li>
+  </ul>
+</section>
+
+<section>
+  <h1>Example: $N_e$ for HCV in Egypt</h1>
+
+  <center>
+    <img data-src="hcv_bsp.gif" style="width:60%">
+
+    <div style="text-align:right;width:60%">
+      <a href="" class="cite">Drummond et al., 2005</a>
+    </div>
+  </center>
+  
+</section>
+
+<section>
+  <h1>General assumptions of the coalescent</h1>
+
+  <ol class="spaced" style="margin-top:10%">
+    <li class="fragment">Samples are members of a population that is at demographic equilibrium.</li>
+    <li class="fragment">Number of samples is small compared to the total population size.
+      <ul>
+        <li>Necessary for WF-based derivation, not all derivations.</li>
+      </ul>
+    <li class="fragment">Population is "well mixed", samples are drawn randomly.</li>
+  </ol>
+  </ol>
+</section>
+
+</section>
+
+<section>
+  <h1>Conclusions</h1>
+
+  <ul class="spaced" style="margin-top:10%">
+    <li class="fragment">Both birth-death and coalescent models probabilistically relate a population's demography to its phylogenetic history.</li>
+
+    <li class="fragment">Both allow for model-based inference of demographic and epidemiological parameters but may differ in their parameterization.</li>
+
+    <li class="fragment">Which model to use depends on what assumptions you are willing to make and what you want to infer.</li>
+  </ul>
+</section>
+
+
+<!-- Outline: (target 25 slides) -->
+
+<!-- Aim is to infer population dynamics from genetic data -->
+
+<!-- Benifits of phylodynamic approach: epidemiological context -->
+
+<!-- What is a population? Trees at different scales. -->
+
+<!-- Bayesian phylodynamic inference: the tree prior -->
+
+<!-- Birth-death models -->
+
+<!-- Relationship between LTT and birth/death rates -->
+
+<!-- Sketch of how tree prior is calculated -->
+
+<!-- Luckily Tanja has solved this for us! -->
+
+<!-- Coalescent models -->
+
+<!-- Comparison between the two approaches -->
+
+<!-- Including rate dynamics: BDSKY -->
+
+<!-- Including population size dynamics: BSP -->
+
+<!-- HCV example: BSP + BDSKY -->
+
+<!-- EBOV example: BDSKY -->
