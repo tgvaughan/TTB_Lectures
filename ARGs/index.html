@@ -14,12 +14,12 @@ reveal:
 
   <div class="institution">cEvo group, D-BSSE, The ETH Zurich</div>
 
-  <div class="date">Taming the BEAST, 22<sup>nd</sup> June, 2018</div>
+  <div class="date">Taming the BEAST, 22<sup>nd</sup> Feb, 2019</div>
 
-  <div>
-    <img data-src="Taming-the-BEAST-Oberageri.png" style="width:200px;box-shadow:none;margin-top:5%">
-  <img data-src="cEvo_logo.png" style="width:200px;box-shadow:none;margin-top:5%">
-  <img data-src="eth_logo.png" style="width:200px;box-shadow:none;margin-top:5%">
+  <div class="logos">
+    <img data-src="Taming-the-BEAST-Down-Under-Logo.png" style="width:200px">
+    <img data-src="cEvo_logo.png" style="width:200px">
+    <img data-src="eth_logo.png" style="width:200px">
   </div>
 
 </section>
@@ -255,8 +255,10 @@ reveal:
     </ul>
 </section>
 
+<!--
 <section>
-    <h1>Sequentially Markov Coalescent (SMC)</h1>
+   
+ <h1>Sequentially Markov Coalescent (SMC)</h1>
     <ul>
         <li><a class="cite" href="https://doi.org/10.1006/tpbi.1998.1403">Wiuf
                 and Hein (1999)</a> reformulated the CwR as a "spatial" process
@@ -295,6 +297,7 @@ reveal:
         <div class="cite" style="text-align:right;margin-top:1em"><a class="cite" href="http://dx.doi.org/10.1038/nature10231">Li and Durbin (2011)</a></div>
     </div>
 </section>
+-->
 
 <section>
     <h1>Bacteria</h1>
@@ -486,6 +489,28 @@ reveal:
     </blockquote>
 </section>
 
+
+<section>
+    <h1>Software implementation</h1>
+
+    <img data-src="bacter_logo.svg" style="width:500px;box-shadow:none">
+
+    <br>
+
+    <a href="http://tgvaughan.github.io/bacter">tgvaughan.github.io/bacter</a>
+
+    <br>
+    <br>
+
+    <ul>
+        <li>BEAST 2 package that performs inference under the ClonalOrigin model.</li>
+        <li>Joint inference of the clonal frame, recombinant edges and parameters.</li>
+        <li>Can be combined with usual variety of substitution models, parametric population models and parameter priors.</li>
+        <li>GUI analysis configuration via BEAUti.</li>
+    </ul>
+</section>
+
+<!--
 <section>
     <h1>MCMC State Proposal Strategy</h1>
 
@@ -521,9 +546,10 @@ reveal:
         correctness.
     </blockquote>
 </section>
+-->
 
 <section>
-    <h1>Validation 2: Inference from simulated data</h1>
+    <h1>Validation: Inference from simulated data</h1>
 
     <img data-src="posterior_rho.svg" style="box-shadow:none; padding:0; margin:0">
     <img data-src="posterior_delta.svg" style="box-shadow:none;padding:0;margin:0">
@@ -590,27 +616,6 @@ reveal:
         <img class="fragment" data-src="gene_flow.svg" style="position:absolute;top:0;left:0;width:250px;background-color:white;padding:20px">
     </div>
 </section>
-
-<section>
-    <h1>Software implementation</h1>
-
-    <img data-src="bacter_logo.svg" style="width:500px;box-shadow:none">
-
-    <br>
-
-    <a href="http://tgvaughan.github.io/bacter">tgvaughan.github.io/bacter</a>
-
-    <br>
-    <br>
-
-    <ul>
-        <li>BEAST 2 package that performs inference under the ClonalOrigin model.</li>
-        <li>Joint inference of the clonal frame, recombinant edges and parameters.</li>
-        <li>Can be combined with usual variety of substitution models, parametric population models and parameter priors.</li>
-        <li>GUI analysis configuration via BEAUti.</li>
-    </ul>
-</section>
-
 
 <section>
     <h1>Bayesian Skyline Plots in Bacter</h1>
